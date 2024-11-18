@@ -17,6 +17,29 @@ bool hasDuplicate(std::vector<int>& nums) {
         }
         return false;
 }
+/*
+"Valid Anagram" Leet Code Question: https://leetcode.com/problems/valid-anagram/description/
+*/
+bool isAnagram(string s, string t) {
+    
+    if (s.length() != t.length())
+        return false;
+
+    vector<int> count(26,0);
+    int length = s.length();
+    for(int i = 0;i<length;i++){
+        count[s[i]-'a'] +=1;
+        count[t[i]-'a'] -=1;
+    }
+
+    for (int val : count) {
+        if (val != 0) {
+            return false;
+        }
+    }
+
+    return true;
+}
 
 /*
 This is the main function which doesn't do anything,
