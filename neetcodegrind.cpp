@@ -53,6 +53,40 @@ bool isAnagram(string s, string t)
 }
 
 /*
+Problem: Group Anagrams
+Leet Code Link: https://leetcode.com/problems/group-anagrams/description/
+*/
+vector<vector<string>> groupAnagrams(vector<string>& strs)
+{
+    unordered_map<string, vector<string>> store_anagrams;
+    for (const auto& s : strs)
+    {
+        vector<int> count(26, 0);
+        for (char c : s)
+        {
+            count[c - 'a']++;
+        }
+
+        int countSize = count.size();
+        string key = to_string(count[0]);
+        for (int i = 1; i < countSize; i++)
+        {
+            key += "#" + to_string(count[i]);
+        }
+
+        store_anagrams[key].push_back(s);
+    }
+
+    vector<vector<string>> result;
+    for (auto& pair : store_anagrams)
+    {
+        result.push_back(pair.second);
+    }
+
+    return result;
+}
+
+/*
 Problem: Two Sum
 Leet Code Link: https://leetcode.com/problems/two-sum/description/
 */
@@ -74,6 +108,8 @@ vector<int> twoSum(vector<int>& nums, int target)
 
     return {};
 }
+
+
 
 /*
 This is the main function which doesn't do anything,
