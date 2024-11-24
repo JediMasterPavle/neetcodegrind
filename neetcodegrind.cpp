@@ -1,6 +1,8 @@
 #include <iostream>
 #include <unordered_map>
 #include <set>
+#include <sstream>
+#include <string>
 #include <vector>
 
 using namespace std;
@@ -141,6 +143,35 @@ vector<int> topKFrequent(vector<int>& nums, int k)
         }
     }
     return res;
+}
+
+/*
+Problem: Encode and Decode Strings
+Leet Code Link: https://leetcode.com/problems/encode-and-decode-strings/description/
+*/
+string encode(vector<string>& strs)
+{
+    string res = "";
+    for (const string& str : strs)
+    {
+        res += str + '\n';
+    }
+
+    return res;
+}
+
+vector<string> decode(string s)
+{
+    vector<string> result;
+    stringstream ss(s);
+    string temp;
+
+    while (getline(ss, temp))
+    {
+        result.push_back(temp);
+    }
+
+    return result;
 }
 
 
