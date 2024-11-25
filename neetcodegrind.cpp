@@ -174,6 +174,29 @@ vector<string> decode(string s)
     return result;
 }
 
+/*
+Problem: Products of Array Except Self
+Leet Code Link: https://leetcode.com/problems/product-of-array-except-self/description/
+*/
+vector<int> productExceptSelf(vector<int>& nums)
+{
+    int numsLength = nums.size();
+    vector<int> output(numsLength, 1);
+
+    for (int i = 1; i < numsLength; i++)
+    {
+        output[i] = output[i-1] * nums[i-1];
+    }
+
+    int postFix = 1;
+    for (int i = (numsLength - 1); i >= 0; i--)
+    {
+        output[i] = postFix * output[i];
+        postFix *= nums[i];
+    }
+
+    return output;
+}
 
 
 /*
