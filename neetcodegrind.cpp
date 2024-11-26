@@ -1,8 +1,10 @@
 #include <iostream>
-#include <unordered_map>
+#include <map>
 #include <set>
 #include <sstream>
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 using namespace std;
@@ -198,6 +200,36 @@ vector<int> productExceptSelf(vector<int>& nums)
     return output;
 }
 
+/*
+Problem: Valid Sudoku
+Leet Code Link: https://leetcode.com/problems/valid-sudoku/description/
+*/
+bool isValidSudoku(vector<vector<char>>& board)
+{
+    unordered_map<int, unordered_set<char>> rows, cols;
+    map<pair<int, int>, unordered_set<char>> squares;
+
+    for(int r = 0; r < 9; r++)
+    {
+        for (int c = 0; c < 9; c++)
+        {
+            if (board[r][c] == '.')
+                continue;
+
+            pair<int, int> squareKey = {r / 3, c / 3};
+
+            if (rows[r].count(board[r][c]) || cols[c].count(board[r][c]) || squares[squareKey].count(board[r][c])) {
+                return false;
+            }
+
+            rows[r].insert(board[r][c]);
+            cols[c].insert(board[r][c]);
+            squares[squareKey].insert(board[r][c]);
+        }
+    }
+
+    return true;
+}
 
 /*
 This is the main function which doesn't do anything,
