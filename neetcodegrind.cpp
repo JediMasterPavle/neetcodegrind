@@ -232,6 +232,34 @@ bool isValidSudoku(vector<vector<char>>& board)
 }
 
 /*
+Problem: Longest Consecutive Sequence
+Leet COde Link: https://leetcode.com/problems/longest-consecutive-sequence/
+*/
+int longestConsecutive(vector<int>& nums) {
+    unordered_map<int, int> mapConsecutives;
+    int res = 0;
+
+    for (int num : nums)
+    {
+        if (!mapConsecutives[num]) {
+            int previous = mapConsecutives[num - 1];
+            int next = mapConsecutives[num + 1];
+
+            mapConsecutives[num] = previous + next + 1;
+            mapConsecutives[num - previous] = mapConsecutives[num];
+            mapConsecutives[num + next] = mapConsecutives[num];
+            res = max(res, mapConsecutives[num]);
+        }
+    }
+
+    return res;
+}
+
+
+
+
+
+/*
 This is the main function which doesn't do anything,
 the functions/classes above will be answers to NeetCode questions
 */
