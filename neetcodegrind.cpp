@@ -255,8 +255,31 @@ int longestConsecutive(vector<int>& nums) {
     return res;
 }
 
+/*
+Problem: Insertion Sort
+Leet Code Link: Could Not Find
+*/
+vector<vector<pair<int, string>>> insertionSort(vector<pair<int, string>>& pairs)
+{
+    vector<vector<pair<int, string>>> output;
+    int pairsLength = pairs.size();
 
+    for (int i = 0; i < pairsLength; i++)
+    {
+        int j = i - 1;
+        while (j >= 0 && pairs[j + 1].first < pairs[j].first)
+        {
+            pair temp = pairs[j + 1];
+            pairs[j + 1] = pairs[j];
+            pairs[j] = temp;
+            j--;
+        }
 
+        output.push_back(pairs);
+    }
+
+    return output;
+}
 
 
 /*
