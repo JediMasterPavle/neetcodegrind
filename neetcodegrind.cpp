@@ -20,6 +20,16 @@ Linked List Structure
     ListNode(int x, ListNode *next) : val(x), next(next) {}
  };
 
+/*
+Definition for a Pair
+*/
+class Pair {
+public:
+    int key;
+    string value;
+
+    Pair(int key, string value) : key(key), value(value) {}
+};
 
 
 /*
@@ -416,6 +426,40 @@ ListNode* mergeKLists(vector<ListNode*>& lists)
     return divide(lists,0,listsSize);
 }
 
+/*
+Problem: Quick Sort
+Leet Code Link: Could Not Find
+*/
+void quickSort(vector<Pair>& pairs,int start, int end)
+{
+    if (end - start <= 0)
+        return;
+
+    Pair pivot = pairs[end];
+    int left = start;
+
+    for (int i = start; i < end; i++)
+    {
+        if (pairs[i].key < pivot.key)
+        {
+            swap(pairs[i], pairs[left]);
+            left++;
+        }
+    }
+
+    pairs[end] = pairs[left];
+    pairs[left] = pivot;
+
+    quickSort(pairs,start,left - 1);
+    quickSort(pairs,left + 1,end);
+}
+
+vector<Pair> quickSort(vector<Pair>& pairs)
+{
+    int pairsSize = pairs.size();
+    quickSort(pairs,0,pairsSize - 1);
+    return pairs;
+}
 
 
 /*
