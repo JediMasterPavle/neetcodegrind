@@ -281,6 +281,61 @@ vector<vector<pair<int, string>>> insertionSort(vector<pair<int, string>>& pairs
     return output;
 }
 
+/*
+Problem: Merge Sort
+Leet Code Link:
+*/
+void merge(vector<pair<int,string>>& pairs, int start, int middle, int end)
+{
+    vector<pair<int,string>> leftSub = {pairs.begin() + start, pairs.begin() + middle + 1};
+    vector<pair<int,string>> rightSub = {pairs.begin() + middle + 1, pairs.begin() + end + 1};
+
+    int i = 0; // index for L
+    int j = 0; // index for R
+    int k = start; // index for arr
+
+    while (i < leftSub.size() && j < rightSub.size())
+    {
+        if (leftSub[i].first <= rightSub[j].first)
+        {
+            pairs[k] = leftSub[i++];
+        }
+        else
+        {
+            pairs[k] = rightSub[j++];
+        }
+        k++;
+    }
+
+    while (i < leftSub.size())
+    {
+        pairs[k++] = leftSub[i++];
+    }
+
+    while (j < rightSub.size())
+    {
+        pairs[k++] = rightSub[j++];
+    }
+}
+
+void mergeSortHelper(vector<pair<int,string>>& pairs, int start, int end)
+{
+    if (end-start+1 <= 1)
+        return;
+
+    int middle = (start+end)/2;
+    mergeSortHelper(pairs,start,middle);
+    mergeSortHelper(pairs,middle+1,end);
+
+    merge(pairs,start,middle,end);
+}
+
+vector<pair<int,string>> mergeSort(vector<pair<int,string>>& pairs)
+{
+    mergeSortHelper(pairs, 0, pairs.size() - 1);
+    return pairs;
+}
+
 
 /*
 This is the main function which doesn't do anything,
