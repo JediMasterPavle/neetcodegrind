@@ -10,6 +10,19 @@
 using namespace std;
 
 /*
+Linked List Structure
+*/
+ struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+ };
+
+
+
+/*
 Problem: Contains Duplicate
 Leet Code Question: https://leetcode.com/problems/contains-duplicate/description/
 */
@@ -335,6 +348,74 @@ vector<pair<int,string>> mergeSort(vector<pair<int,string>>& pairs)
     mergeSortHelper(pairs, 0, pairs.size() - 1);
     return pairs;
 }
+
+/*
+Problem: Merge K Sorted Linked Lists
+Leet Code Link: https://leetcode.com/problems/merge-k-sorted-lists/
+*/
+ListNode* merge(ListNode* left, ListNode* right)
+{
+    ListNode dummy;
+    ListNode* current = &dummy;
+
+    while(left != nullptr && right != nullptr)
+    {
+        if (left->val <= right->val)
+        {
+            current->next = left;
+            left = left->next;
+        }
+        else
+        {
+            current->next = right;
+            right = right->next;
+        }
+
+        current = current->next;
+    }
+
+    if (left != nullptr)
+    {
+        current->next = left;
+    }
+    else if (right != nullptr){
+        current->next = right;
+    }
+
+    return dummy.next;
+}
+
+ListNode* divide(vector<ListNode*>& lists,int start, int end)
+{
+    if (start > end)
+    {
+        return nullptr;
+    }
+    if (start == end)
+    {
+        return lists[start];
+    }
+
+    int middle = (start + end) / 2;
+
+    ListNode* left = divide(lists,start,middle);
+    ListNode* right = divide(lists,middle+1, end);
+
+    return merge(left,right);
+}
+
+ListNode* mergeKLists(vector<ListNode*>& lists)
+{
+    int listsSize = lists.size() - 1;
+
+    if (listsSize <= 0)
+    {
+        return nullptr;
+    }
+
+    return divide(lists,0,listsSize);
+}
+
 
 
 /*
