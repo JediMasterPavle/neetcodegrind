@@ -461,6 +461,35 @@ vector<Pair> quickSort(vector<Pair>& pairs)
     return pairs;
 }
 
+/*
+Problem: Sort Colours
+Leet COde Link: https://leetcode.com/problems/sort-colors/
+*/
+void sortColors(vector<int>& nums) {
+    int sizeNums = nums.size();
+    int left = 0;
+    int current = 0;
+    int right = sizeNums - 1;
+
+    while(current <= right)
+    {
+        if (nums[current] == 0)
+        {
+            swap(nums[current], nums[left]);
+            left++;
+            current++;
+        }
+        else if (nums[current] == 1)
+        {
+            current++;
+        }
+        else
+        {
+            swap(nums[current], nums[right]);
+            right--;
+        }
+    }
+}
 
 /*
 This is the main function which doesn't do anything,
