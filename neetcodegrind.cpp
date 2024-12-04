@@ -1,5 +1,7 @@
 #include <iostream>
 #include <map>
+#include <iostream>
+#include <random>
 #include <set>
 #include <sstream>
 #include <string>
@@ -551,6 +553,58 @@ bool searchMatrix(vector<vector<int>>& matrix, int target)
 
     return false;
 }
+
+/*
+Problem: Guess Number Higher or Lower
+Leet Code Link: https://leetcode.com/problems/guess-number-higher-or-lower/description/
+*/
+int guess(int num)
+{
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(1, INT32_MAX);
+
+    int randomNum = dis(gen);
+
+    if (num > randomNum)
+    {
+        return -1;
+    }
+    else if (num < randomNum)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int guessNumber(int n)
+{
+    int low = 1;
+    int high = n;
+
+    while (low <= high)
+    {
+        int middle = low + (high - low)/2;
+        if (guess(middle) == -1)
+        {
+            high = middle - 1;
+        }
+        else if (guess(middle) == 1)
+        {
+            low = middle + 1;
+        }
+        else
+        {
+            return middle;
+        }
+    }
+
+return 0;
+}
+
 
 
 /*
