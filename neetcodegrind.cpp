@@ -1,3 +1,5 @@
+#include <cstdlib>
+#include <ctime>
 #include <iostream>
 #include <map>
 #include <iostream>
@@ -33,6 +35,37 @@ public:
     Pair(int key, string value) : key(key), value(value) {}
 };
 
+/*
+Guess Random Number
+*/
+random_device rd;
+mt19937 gen(rd());
+uniform_int_distribution<> dis(1, INT32_MAX);
+int randomNum = dis(gen);
+
+int guess(int num)
+{
+    if (num > randomNum)
+    {
+        return -1;
+    }
+    else if (num < randomNum)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+/*
+Checks if Random Number is Same as Parameter
+*/
+int isBadVersion(int guess)
+{
+    return guess == randomNum;
+}
 
 /*
 Problem: Contains Duplicate
@@ -558,28 +591,6 @@ bool searchMatrix(vector<vector<int>>& matrix, int target)
 Problem: Guess Number Higher or Lower
 Leet Code Link: https://leetcode.com/problems/guess-number-higher-or-lower/description/
 */
-int guess(int num)
-{
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(1, INT32_MAX);
-
-    int randomNum = dis(gen);
-
-    if (num > randomNum)
-    {
-        return -1;
-    }
-    else if (num < randomNum)
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
-}
-
 int guessNumber(int n)
 {
     int low = 1;
@@ -603,6 +614,33 @@ int guessNumber(int n)
     }
 
 return 0;
+}
+
+/*
+Problem: First Bad Version
+Leet Code Link: https://leetcode.com/problems/first-bad-version/description/
+*/
+int firstBadVersion(int n)
+{
+    int low = 0;
+    int high = n;
+    int answer = n;
+
+    while (low < high)
+    {
+        int middle = low + (high - low) / 2;
+        if (isBadVersion(middle))
+        {
+            answer = middle;
+            high = middle-1;
+        }
+        else
+        {
+            low = middle + 1;
+        }
+    }
+
+    return answer;
 }
 
 
