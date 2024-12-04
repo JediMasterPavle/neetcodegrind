@@ -492,6 +492,33 @@ void sortColors(vector<int>& nums) {
 }
 
 /*
+Problem: Binary Search
+Leet Code Link: https://leetcode.com/problems/binary-search/description/
+*/
+int search(vector<int>& nums, int target)
+{
+    int sizeNums = nums.size();
+    int low = 0;
+    int high = sizeNums - 1;
+
+    while (low < high)
+    {
+        int middle = low + (high - low) / 2;
+        if (nums[middle] >= target)
+        {
+            high = middle;
+        }
+        else
+        {
+            low = middle + 1;
+        }
+    }
+
+    return (low < sizeNums && nums[low] == target) ? low : -1;
+}
+
+
+/*
 This is the main function which doesn't do anything,
 the functions/classes above will be answers to NeetCode questions
 */
