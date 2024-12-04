@@ -517,6 +517,41 @@ int search(vector<int>& nums, int target)
     return (low < sizeNums && nums[low] == target) ? low : -1;
 }
 
+/*
+Problem: Search a 2D Matrix
+Leet Code Link: https://leetcode.com/problems/search-a-2d-matrix/description/
+*/
+bool searchMatrix(vector<vector<int>>& matrix, int target)
+{
+    int rows = matrix.size();
+    int cols = matrix[0].size();
+
+    int left = 0;
+    int right = (rows * cols) - 1;
+
+    while (left <= right)
+    {
+        int middle = left + (right - left)/2;
+        int row = middle / cols;
+        int col = middle % cols;
+
+        if (matrix[row][col] < target)
+        {
+            left = middle + 1;
+        }
+        else if (matrix[row][col] > target)
+        {
+            right = middle - 1;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 
 /*
 This is the main function which doesn't do anything,
