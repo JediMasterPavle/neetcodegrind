@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
@@ -643,6 +644,39 @@ int firstBadVersion(int n)
     return answer;
 }
 
+/*
+Problem: Koko Eating Bananas
+Leet Code Link: https://leetcode.com/problems/koko-eating-bananas/description/
+*/
+int minEatingSpeed(vector<int>& piles, int h)
+{
+    int low = 1;
+    int high = *max_element(piles.begin(), piles.end());
+    int result = high;
+
+    while (low <= high)
+    {
+        int k = low + (high - low)/2;
+
+        int totalHours = 0;
+        for (int pile : piles)
+        {
+            totalHours += ceil(static_cast<double>(pile) / k);
+        }
+
+        if (totalHours <= h)
+        {
+            result = k;
+            high = k - 1;
+        }
+        else
+        {
+            low = k + 1;
+        }
+    }
+
+    return result;
+}
 
 
 /*
