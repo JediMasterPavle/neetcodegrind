@@ -15,6 +15,18 @@
 using namespace std;
 
 /*
+Tree Node Structure
+*/
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+
+/*
 Linked List Structure
 */
  struct ListNode {
@@ -676,6 +688,29 @@ int minEatingSpeed(vector<int>& piles, int h)
     }
 
     return result;
+}
+
+/*
+Problem: Search in a Binary Search Tree
+Leet Code Link: https://leetcode.com/problems/search-in-a-binary-search-tree/description/
+*/
+TreeNode* searchBST(TreeNode* root, int val)
+{
+    if (root == nullptr)
+        return nullptr;
+
+    if (val > root->val)
+    {
+        return searchBST(root->right, val);
+    }
+    else if (val < root->val)
+    {
+        return searchBST(root->left, val);
+    }
+    else
+    {
+        return root;
+    }
 }
 
 
