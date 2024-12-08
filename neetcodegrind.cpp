@@ -736,6 +736,56 @@ TreeNode* insertIntoBST(TreeNode* root, int val)
     return root;
 }
 
+/*
+Problem: Delete Node in a BST
+Leet Code Link: https://leetcode.com/problems/delete-node-in-a-bst/description/
+*/
+TreeNode* FindMinValueNode(TreeNode* tree)
+{
+    TreeNode* current = tree;
+    while (current != nullptr && current->left != nullptr)
+    {
+        current = current->left;
+    }
+
+    return current;
+}
+
+TreeNode* deleteNode(TreeNode* root, int key)
+{
+    if (root == nullptr)
+        return nullptr;
+
+    if (root->val < key)
+    {
+        root->left = deleteNode(root->left, key);
+    }
+    else if (root->val > key)
+    {
+        root->right = deleteNode(root->right, key);
+    }
+    else
+    {
+        if (root->left == nullptr)
+        {
+            return root->right;
+        }
+        else if (root->right == nullptr)
+        {
+            return root->left;
+        }
+        else
+        {
+            TreeNode* minNode = FindMinValueNode(root->right);
+            root->val = minNode->val;
+            root->right = deleteNode(root->right, minNode->val);
+        }
+    }
+
+    return root;
+}
+
+
 
 /*
 This is the main function which doesn't do anything,
