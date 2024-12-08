@@ -807,6 +807,35 @@ vector<int> inorderTraversal(TreeNode* root) {
     return output;
 }
 
+/*
+Problem: Kth Smallest Integer in BST
+Leet Code Link: https://leetcode.com/problems/kth-smallest-element-in-a-bst/
+*/
+void inOrderTraversal(TreeNode* root, int& count, int& answer, int k)
+{
+    if(root == nullptr)
+        return;
+
+    inOrderTraversal(root->left, count, answer, k);
+    count++;
+
+    if(count == k)
+    {
+        answer = root->val;
+        return;
+    }
+
+    inOrderTraversal(root->right, count, answer, k);
+}
+
+int kthSmallest(TreeNode* root, int k)
+{
+    int answer;
+    int count = 0;
+    inOrderTraversal(root, count, answer, k);
+    return answer;
+}
+
 
 /*
 This is the main function which doesn't do anything,
