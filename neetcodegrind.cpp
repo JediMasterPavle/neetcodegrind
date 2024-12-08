@@ -785,6 +785,27 @@ TreeNode* deleteNode(TreeNode* root, int key)
     return root;
 }
 
+/*
+Problem: Binary Tree Inorder Traversal
+Leet Code Link: https://leetcode.com/problems/binary-tree-inorder-traversal/description/
+*/
+vector<int> inorderTraversal(TreeNode* root) {
+    vector<int> output;
+    if (root == nullptr)
+    {
+        return output;
+    }
+
+    vector<int> left = inorderTraversal(root->left);
+    output.insert(output.end(), left.begin(),left.end());
+
+    output.push_back(root->val);
+
+    vector<int> right = inorderTraversal(root->right);
+    output.insert(output.end(), right.begin(),right.end());
+
+    return output;
+}
 
 
 /*
