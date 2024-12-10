@@ -851,6 +851,40 @@ int kthSmallest(TreeNode* root, int k)
     return answer;
 }
 
+/*
+Problem: Construct Binary Tree from Preorder and Inorder Traversal
+Leet Code Link: https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/description/
+*/
+TreeNode* buildTreeHelper(vector<int>& preorder, int preStart, int preEnd, vector<int>& inorder, int inStart, int inEnd, unordered_map<int,int> inOrderIndicies)
+{
+    if (preStart > preEnd || inStart > inEnd)
+        return nullptr;
+
+    TreeNode* root = new TreeNode(preorder[preStart]);
+
+    int mid = inOrderIndicies[preorder[preStart]];
+    int leftSubTreeSize = mid - inStart;
+
+    root->left = buildTreeHelper(preorder, preStart + 1, preStart + leftSubTreeSize, inorder, inStart, mid - 1, inOrderIndicies);
+    root->right = buildTreeHelper(preorder, preStart + leftSubTreeSize + 1, preEnd, inorder, mid + 1, inEnd, inOrderIndicies);
+
+    return root;
+}
+
+TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder)
+{
+    unordered_map<int,int> inOrderIndicies;
+    for(int i = 0; i < inorder.size(); i++)
+    {
+        inOrderIndicies[inorder[i]] = i;
+    }
+
+    return buildTreeHelper(preorder, 0, preorder.size()-1, inorder, 0, inorder.size()-1, inOrderIndicies);
+}
+
+
+
+
 
 /*
 This is the main function which doesn't do anything,
