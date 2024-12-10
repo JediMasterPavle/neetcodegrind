@@ -3,7 +3,7 @@
 #include <ctime>
 #include <iostream>
 #include <map>
-#include <iostream>
+#include <queue>
 #include <random>
 #include <set>
 #include <sstream>
@@ -882,6 +882,48 @@ TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder)
     return buildTreeHelper(preorder, 0, preorder.size()-1, inorder, 0, inorder.size()-1, inOrderIndicies);
 }
 
+/*
+Problem: Binary Tree Level Order Traversal
+Leet Code Link: https://leetcode.com/problems/binary-tree-level-order-traversal/description/
+*/
+vector<vector<int>> levelOrder(TreeNode* root)
+{
+    if (root == nullptr)
+    {
+        return {};
+    }
+
+    queue<TreeNode*> bfs;
+    bfs.push(root);
+
+    vector<vector<int>> output;
+    vector<int> currentLevel;
+
+    while (!bfs.empty())
+    {
+        currentLevel.clear();
+        int currentLevelSize = bfs.size();
+        for (int i = 0; i < currentLevelSize; i++)
+        {
+            TreeNode* currentNode = bfs.front();
+            bfs.pop();
+            currentLevel.push_back(currentNode->val);
+            if (currentNode->left != nullptr)
+            {
+                bfs.push(currentNode->left);
+            }
+
+            if (currentNode->right != nullptr)
+            {
+                bfs.push(currentNode->right);
+            }
+        }
+
+        output.push_back(currentLevel);
+    }
+
+    return output;
+}
 
 
 
