@@ -925,6 +925,48 @@ vector<vector<int>> levelOrder(TreeNode* root)
     return output;
 }
 
+/*
+Problem: Binary Tree Right Side View
+Leet Code Link: https://leetcode.com/problems/binary-tree-right-side-view/description/
+*/
+vector<int> rightSideView(TreeNode* root)
+{
+    if (root == nullptr)
+    {
+        return {};
+    }
+
+    vector<int> output;
+    queue<TreeNode*> bfs;
+    bfs.push(root);
+
+    TreeNode* current = nullptr;
+    while (!bfs.empty())
+    {
+        TreeNode* rightNode = nullptr;
+        int bfsQueueSize = bfs.size();
+        for (int i = 0; i<bfsQueueSize; i++)
+        {
+            current = bfs.front();
+            bfs.pop();
+
+            if (current != nullptr)
+            {
+                rightNode = current;
+                bfs.push(current->left);
+                bfs.push(current->right);
+            }
+        }
+
+        if (rightNode != nullptr)
+        {
+            output.push_back(rightNode->val);
+        }
+    }
+
+    return output;
+}
+
 
 
 
