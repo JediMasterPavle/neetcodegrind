@@ -1144,6 +1144,26 @@ public:
     }
 };
 
+/*
+Problem: Path Sum
+Leet Code Link: https://leetcode.com/problems/path-sum/
+*/
+bool hasPathSum(TreeNode* root, int targetSum)
+{
+    if (root == nullptr)
+        return false;
+
+    if (root->left == nullptr && root->right == nullptr)
+        return root->val == targetSum;
+
+    if (hasPathSum(root->left, targetSum - root->val))
+        return true;
+
+    else if (hasPathSum(root->right, targetSum - root->val))
+        return true;
+
+    return false;
+}
 
 
 
