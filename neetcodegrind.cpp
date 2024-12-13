@@ -27,6 +27,19 @@ struct TreeNode {
 };
 
 /*
+Tree Node Structure with (key,pair)
+*/
+struct TreeNode2
+{
+    int key;
+    int value;
+    TreeNode2* left;
+    TreeNode2* right;
+
+    TreeNode2(int k, int v) : key(k), value(v), left(nullptr), right(nullptr) {}
+};
+
+/*
 Linked List Structure
 */
  struct ListNode {
@@ -966,6 +979,170 @@ vector<int> rightSideView(TreeNode* root)
 
     return output;
 }
+
+/*
+Problem: Design Binary Search Tree
+Leet Code Link:
+*/
+class TreeMap {
+
+private:
+    TreeNode2* root;
+
+    void InOrderTraversal(vector<int>& output, TreeNode2* root)
+    {
+        if (root == nullptr)
+            return;
+
+        InOrderTraversal(output, root->left);
+        output.push_back(root->key);
+        InOrderTraversal(output, root->right);
+    }
+
+    TreeNode2* findMin(TreeNode2* node)
+    {
+        if (node == nullptr)
+            return nullptr;
+
+        if (node->left == nullptr)
+        {
+            return node;
+        }
+
+        return findMin(node->left);
+    }
+
+    TreeNode2* findMax(TreeNode2* node)
+    {
+        if (node == nullptr)
+            return nullptr;
+
+        if (node->right == nullptr)
+        {
+            return node;
+        }
+
+        return findMax(node->right);
+    }
+
+
+    TreeNode2* GetSelectedTreeNode(TreeNode2* root, int key)
+    {
+        if (root == nullptr)
+            return nullptr;
+
+        if (root->key == key)
+        {
+            return root;
+        }
+        else if (root->key > key)
+        {
+            return GetSelectedTreeNode(root->left, key);
+        }
+        else
+        {
+            return GetSelectedTreeNode(root->right, key);
+        }
+    }
+
+    void InsertTreeNode(TreeNode2*& root, int key, int val)
+    {
+        if (root == nullptr)
+        {
+            root = new TreeNode2(key, val);
+            return;
+        }
+
+        if (root->key == key)
+        {
+            root->value = val;
+            return;
+        }
+        else if (root->key > key)
+        {
+            InsertTreeNode(root->left, key, val);
+        }
+        else
+        {
+            InsertTreeNode(root->right, key, val);
+        }
+    }
+
+    TreeNode2* RemoveTreeNode(TreeNode2* curr, int key)
+    {
+        if (curr == nullptr)
+        {
+            return nullptr;
+        }
+
+        if (key > curr->key)
+        {
+            curr->right = RemoveTreeNode(curr->right, key);
+        }
+        else if (key < curr->key)
+        {
+            curr->left = RemoveTreeNode(curr->left, key);
+        }
+        else
+        {
+            if (curr->left == nullptr)
+            {
+                return curr->right;
+            }
+            else if (curr->right == nullptr)
+            {
+                return curr->left;
+            }
+            else
+            {
+                TreeNode2* minNode = findMin(curr->right);
+                curr->key = minNode->key;
+                curr->value = minNode->value;
+                curr->right = RemoveTreeNode(curr->right, minNode->key);
+            }
+        }
+
+        return curr;
+    }
+
+public:
+    TreeMap() : root(nullptr) {}
+
+    void insert(int key, int val)
+    {
+        InsertTreeNode(root, key, val);
+    }
+
+    int get(int key)
+    {
+        TreeNode2* selectedNode = GetSelectedTreeNode(root, key);
+        return selectedNode != nullptr ? selectedNode->value : -1;
+    }
+
+    int getMin()
+    {
+        TreeNode2* minNode = findMin(root);
+        return minNode != nullptr ? minNode->value : -1;
+    }
+
+    int getMax()
+    {
+        TreeNode2* maxNode = findMax(root);
+        return maxNode != nullptr ? maxNode->value : -1;
+    }
+
+    void remove(int key)
+    {
+        root = RemoveTreeNode(root, key);
+    }
+
+    std::vector<int> getInorderKeys()
+    {
+        vector<int> output;
+        InOrderTraversal(output, root);
+        return output;
+    }
+};
 
 
 
