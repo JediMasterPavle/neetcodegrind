@@ -1192,6 +1192,38 @@ vector<vector<int>> subsets(vector<int>& nums)
     return res;
 }
 
+/*
+Problem: Kth Largest Element in a Stream
+Leet Code Link: https://leetcode.com/problems/kth-largest-element-in-a-stream/description/
+*/
+class KthLargest {
+public:
+    int kth;
+    priority_queue<int, vector<int>, greater<int>> heap;
+
+    KthLargest(int k, vector<int>& nums) : kth(k)
+    {
+        for (int num : nums)
+        {
+            heap.push(num);
+            if (heap.size() > k)
+            {
+                heap.pop();
+            }
+        }
+    }
+
+    int add(int val)
+    {
+        heap.push(val);
+        if (heap.size() > kth)
+        {
+            heap.pop();
+        }
+
+        return heap.top();
+    }
+};
 
 
 
