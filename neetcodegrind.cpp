@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <ctime>
+#include <functional>
 #include <iostream>
 #include <map>
 #include <queue>
@@ -1225,6 +1226,60 @@ public:
     }
 };
 
+/*
+Problem: Last Stone Weight
+Leet Code Link: https://leetcode.com/problems/last-stone-weight/description/
+*/
+int lastStoneWeight(vector<int>& stones)
+{
+    priority_queue<int, vector<int>, less<int>> heap;
+    for (int stone : stones)
+    {
+        heap.push(stone);
+    }
+
+    while (heap.size() >= 2)
+    {
+        int first = heap.top();
+        heap.pop();
+        int second = heap.top();
+        heap.pop();
+
+        if (first > second)
+        {
+            heap.push(first - second);
+        }
+    }
+
+    heap.push(0);
+    return heap.top();
+}
+
+/**/
+    vector<vector<int>> kClosest(vector<vector<int>>& points, int k)
+    {
+        priority_queue<pair<int, vector<int>>> maxHeap;
+        for (auto& point : points)
+        {
+            int distance = point[0]*point[0] + point[1]*point[1];
+            pair<int, vector<int>> distanceWithPoint = {distance, point};
+            maxHeap.push(distanceWithPoint);
+
+            if (maxHeap.size() > k)
+            {
+                maxHeap.pop();
+            }
+        }
+
+        vector<vector<int>> res;
+        while (!maxHeap.empty())
+        {
+            pair<int, vector<int>> distanceWithPoint = maxHeap.top();
+            maxHeap.pop();
+            res.push_back(distanceWithPoint.second);
+        }
+        return res;
+    }
 
 
 /*
