@@ -1255,31 +1255,157 @@ int lastStoneWeight(vector<int>& stones)
     return heap.top();
 }
 
-/**/
-    vector<vector<int>> kClosest(vector<vector<int>>& points, int k)
+/*
+Problem: K Closest Points to Origin
+Leet Code Link: https://leetcode.com/problems/k-closest-points-to-origin/
+*/
+vector<vector<int>> kClosest(vector<vector<int>>& points, int k)
+{
+    priority_queue<pair<int, vector<int>>> maxHeap;
+    for (auto& point : points)
     {
-        priority_queue<pair<int, vector<int>>> maxHeap;
-        for (auto& point : points)
-        {
-            int distance = point[0]*point[0] + point[1]*point[1];
-            pair<int, vector<int>> distanceWithPoint = {distance, point};
-            maxHeap.push(distanceWithPoint);
+        int distance = point[0]*point[0] + point[1]*point[1];
+        pair<int, vector<int>> distanceWithPoint = {distance, point};
+        maxHeap.push(distanceWithPoint);
 
-            if (maxHeap.size() > k)
-            {
-                maxHeap.pop();
-            }
-        }
-
-        vector<vector<int>> res;
-        while (!maxHeap.empty())
+        if (maxHeap.size() > k)
         {
-            pair<int, vector<int>> distanceWithPoint = maxHeap.top();
             maxHeap.pop();
-            res.push_back(distanceWithPoint.second);
         }
-        return res;
     }
+
+    vector<vector<int>> res;
+    while (!maxHeap.empty())
+    {
+        pair<int, vector<int>> distanceWithPoint = maxHeap.top();
+        maxHeap.pop();
+        res.push_back(distanceWithPoint.second);
+    }
+    return res;
+}
+
+/*
+Problem: Design Heap
+Leet Code Link:
+*/
+class MinHeap {
+private:
+    vector<int> heap;
+
+    void BubbleUp(int index)
+    {
+        if (heap.size() <= 1)
+        {
+            return;
+        }
+
+
+        while (index > 1)
+        {
+            int child = index;
+            int parent = child / 2;
+            if (heap[child] < heap[parent])
+            {
+                swap(heap[child], heap[parent]);
+                child = parent;
+                index = parent;
+            }
+            else
+                break;
+        }
+    }
+
+    void BubbleDown(int index)
+    {
+        int size = heap.size();
+        int child = 2 * index;
+
+        while (child < size)
+        {
+            if (child + 1 < size && heap[child + 1] < heap[child] && heap[child + 1] < heap[index])
+            {
+                swap(heap[child + 1], heap[index]);
+                index = child + 1;
+            }
+            else if (heap[child] < heap[index])
+            {
+                swap(heap[child], heap[index]);
+                index = child;
+            }
+            else
+                break;
+
+            child = 2 * index;
+        }
+    }
+
+public:
+    MinHeap()
+    {
+        heap.push_back(0);  // Reserve index 0, heap starts at index 1
+    }
+
+    void push(int val)
+    {
+        heap.push_back(val);
+        BubbleUp(heap.size() - 1);
+    }
+
+    int pop()
+    {
+        if (heap.size() <= 1)
+        {
+            return -1;  // No element to pop
+        }
+
+        int pop_val = heap[1];  // Store the top element to return it later
+
+        if (heap.size() == 2)
+        {
+            heap.pop_back();  // Only one element left, just remove it
+            return pop_val;
+        }
+
+        // Replace the root element with the last element
+        heap[1] = heap.back();
+        heap.pop_back();
+
+        // Restore the heap property by bubbling down the new root element
+        BubbleDown(1);
+
+        return pop_val;  // Return the popped element
+    }
+
+    int top()
+    {
+        if (heap.size() <= 1)
+        {
+            return -1;  // No top element
+        }
+
+        return heap[1];  // Return the root element
+    }
+
+    void heapify(const vector<int>& arr)
+    {
+        heap.clear();
+        heap.push_back(0);
+        heap.insert(heap.end(), arr.begin(), arr.end());
+
+        int midPoint = (heap.size() - 1) / 2;
+        while (midPoint > 0)
+        {
+            BubbleDown(midPoint);
+            midPoint--;
+        }
+    }
+};
+
+
+
+
+
+
 
 
 /*
