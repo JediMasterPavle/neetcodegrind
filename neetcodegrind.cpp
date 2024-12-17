@@ -1401,6 +1401,45 @@ public:
     }
 };
 
+/*
+Problem: Kth Largest Element in an Array
+Leet Code Link: https://leetcode.com/problems/kth-largest-element-in-an-array/description/
+*/
+int QuickSelectFindKthLargest(vector<int>& nums, int k, int left, int right)
+{
+    int pivot = nums[right];
+    int p = left;
+
+    for (int i = left; i < right; i++)
+    {
+        if (nums[i] <= pivot)
+        {
+            swap(nums[i] , nums[p]);
+            p++;
+        }
+    }
+
+    swap(nums[right] , nums[p]);
+
+    if (p > k)
+    {
+        return QuickSelectFindKthLargest(nums, k, left, p - 1);
+    }
+    else if (p < k)
+    {
+        return QuickSelectFindKthLargest(nums, k, p + 1, right);
+    }
+    else
+    {
+        return nums[p];
+    }
+}
+
+int findKthLargest(vector<int>& nums, int k)
+{
+    int numsSize = nums.size();
+    return QuickSelectFindKthLargest(nums, numsSize - k, 0, numsSize - 1);
+}
 
 
 
