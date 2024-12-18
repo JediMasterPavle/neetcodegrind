@@ -3,6 +3,7 @@
 #include <ctime>
 #include <functional>
 #include <iostream>
+#include <list>
 #include <map>
 #include <queue>
 #include <random>
@@ -1440,6 +1441,56 @@ int findKthLargest(vector<int>& nums, int k)
     int numsSize = nums.size();
     return QuickSelectFindKthLargest(nums, numsSize - k, 0, numsSize - 1);
 }
+
+/*
+Problem: LRU Cache
+Leet Code Link: https://leetcode.com/problems/lru-cache/description/
+*/
+class LRUCache
+{
+private:
+    unordered_map<int, pair<int, list<int>::iterator>> cache;
+    list<int> order;
+    int capacity;
+
+public:
+    LRUCache(int capacity)
+    {
+        this->capacity = capacity;
+    }
+
+    int get(int key)
+    {
+        if (cache.find(key) == cache.end())
+        {
+            return -1;
+        }
+
+        order.erase(cache[key].second);
+        order.push_back(key);
+        cache[key].second = --order.end();
+
+        return cache[key].first;
+    }
+
+    void put(int key, int value)
+    {
+        if (cache.find(key) != cache.end())
+        {
+            order.erase(cache[key].second);
+        }
+        else if (cache.size() == capacity)
+        {
+            int lru = order.front();
+            order.pop_front();
+            cache.erase(lru);
+        }
+
+        order.push_back(key);
+        cache[key] = {value, --order.end()};
+    }
+};
+
 
 
 
