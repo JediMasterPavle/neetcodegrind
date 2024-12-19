@@ -1491,6 +1491,119 @@ public:
     }
 };
 
+/*
+Problem: Design Hash Table
+Leet Code Link:
+*/
+class HashTable
+{
+private:
+    int size;
+    int capacity;
+    vector<vector<pair<int,int>>> hashTable;
+
+
+    int HashFunction(int key)
+    {
+        return key % capacity;
+    }
+
+    int HashFunction(int key, int customCapacity)
+    {
+        return key % customCapacity;
+    }
+
+public:
+    HashTable(int capacityOfHashTable) : size(0), capacity(capacityOfHashTable)
+    {
+        hashTable = vector<vector<pair<int,int>>>(capacity);
+    }
+
+    void insert(int key, int value)
+    {
+        int hash = HashFunction(key);
+
+        for(pair<int,int>& keyValue : hashTable[hash])
+        {
+            if (keyValue.first == key)
+            {
+                keyValue.second = value;
+                return;
+            }
+        }
+
+        hashTable[hash].push_back(pair<int,int>(key,value));
+        size++;
+
+        if ((float)size / capacity >= 0.5)
+        {
+            resize();
+        }
+    }
+
+    int get(int key)
+    {
+        int hash = HashFunction(key);
+
+        for(pair<int,int>& keyValue : hashTable[hash])
+        {
+            if (keyValue.first == key)
+            {
+                return keyValue.second;
+            }
+        }
+
+        return -1;
+    }
+
+    bool remove(int key)
+    {
+        int hash = HashFunction(key);
+        vector<pair<int,int>>& bucket = hashTable[hash];
+
+        for(int i = 0; i < bucket.size(); i++)
+        {
+            if (bucket[i].first == key)
+            {
+                bucket.erase(bucket.begin() + i);
+                size--;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    int getSize() const
+    {
+        return size;
+    }
+
+    int getCapacity() const
+    {
+        return capacity;
+    }
+
+    void resize()
+    {
+        int newCapacitySize = capacity * 2;
+        vector<vector<pair<int,int>>> newHashTable(newCapacitySize);
+
+        for (vector<pair<int,int>>& bucket : hashTable)
+        {
+            for (pair<int,int>& keyValuePair : bucket)
+            {
+                int hash = HashFunction(keyValuePair.first, newCapacitySize);
+                newHashTable[hash].push_back(keyValuePair);
+            }
+        }
+
+        hashTable = newHashTable;
+        capacity = newCapacitySize;
+    }
+};
+
+
 
 
 
