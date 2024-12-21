@@ -1604,7 +1604,7 @@ public:
 };
 
 /*
-Problem: Design Hash Table
+Problem: Matrix Depth-First Search
 Leet Code Link:
 */
 int countPaths(vector<vector<int>>& grid, unordered_set<string>& visited, int row, int columb)
@@ -1639,6 +1639,14 @@ int countPaths(vector<vector<int>>& grid)
     unordered_set<string> visited;
     return countPaths(grid, visited, 0, 0);
 }
+
+/*
+Problem: Number of Islands
+Leet Code Link: https://leetcode.com/problems/number-of-islands/description/
+*/
+
+
+
 
 
 
