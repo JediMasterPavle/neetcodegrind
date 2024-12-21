@@ -1603,8 +1603,42 @@ public:
     }
 };
 
+/*
+Problem: Design Hash Table
+Leet Code Link:
+*/
+int countPaths(vector<vector<int>>& grid, unordered_set<string>& visited, int row, int columb)
+{
+    int ROW = grid.size();
+    int COL = grid[0].size();
+    int count = 0;
 
+    if (min(row, columb) < 0 || row == ROW || columb == COL || grid[row][columb] == 1 || visited.find(to_string(row) + "," + to_string(columb)) != visited.end())
+    {
+        return 0;
+    }
+    else if (row == ROW - 1 && columb == COL - 1 )
+    {
+        return 1;
+    }
 
+    visited.insert(to_string(row) + "," + to_string(columb));
+
+    count += countPaths(grid, visited, row + 1, columb);
+    count += countPaths(grid, visited, row - 1, columb);
+    count += countPaths(grid, visited, row, columb + 1);
+    count += countPaths(grid, visited, row, columb - 1);
+
+    visited.erase(to_string(row) + "," + to_string(columb));
+
+    return count;
+}
+
+int countPaths(vector<vector<int>>& grid)
+{
+    unordered_set<string> visited;
+    return countPaths(grid, visited, 0, 0);
+}
 
 
 
