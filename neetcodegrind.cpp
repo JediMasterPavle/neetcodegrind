@@ -1644,10 +1644,77 @@ int countPaths(vector<vector<int>>& grid)
 Problem: Number of Islands
 Leet Code Link: https://leetcode.com/problems/number-of-islands/description/
 */
+void dfsNumIsIsland(vector<vector<char>>& grid, int r, int c)
+{
+    if (min(r,c) < 0 || r >= grid.size() || c >= grid[0].size() || grid[r][c] == '0')
+        return;
 
+    grid[r][c] = '0';
+    dfsNumIsIsland(grid, r + 1, c);
+    dfsNumIsIsland(grid, r - 1, c);
+    dfsNumIsIsland(grid, r, c + 1);
+    dfsNumIsIsland(grid, r, c -1);
+}
 
+int numIslands(vector<vector<char>>& grid)
+{
+    int numberOfIslands = 0;
+    int ROW = grid.size(), COL = grid[0].size();
 
+    for (int r = 0; r < ROW; r++)
+    {
+        for (int c = 0; c < COL; c++)
+        {
+            if (grid[r][c] == '1')
+            {
+                dfsNumIsIsland(grid, r, c);
+                numberOfIslands++;
+            }
+        }
+    }
 
+    return numberOfIslands;
+}
+
+/*
+Problem: Max Area of Island
+Leet Code Link: https://leetcode.com/problems/max-area-of-island/description/
+*/
+int dfsMaxAreaIsland(vector<vector<int>>& grid, int r, int c)
+{
+    if (min(r,c) < 0 || r >= grid.size() || c >= grid[0].size() || grid[r][c] == 0)
+        return 0;
+
+    int islandMax = 1;
+    grid[r][c] = 0;
+
+    islandMax += dfsMaxAreaIsland(grid, r + 1, c);
+    islandMax += dfsMaxAreaIsland(grid, r - 1, c);
+    islandMax += dfsMaxAreaIsland(grid, r, c + 1);
+    islandMax += dfsMaxAreaIsland(grid, r, c - 1);
+
+    return islandMax;
+}
+
+int maxAreaOfIsland(vector<vector<int>>& grid)
+{
+    int maxIslanArea = 0;
+    int ROW = grid.size(), COL = grid[0].size();
+
+    for (int r = 0; r < ROW; r++)
+    {
+        for (int c = 0; c < COL; c++)
+        {
+            if (grid[r][c] == 1)
+            {
+                int island = dfsMaxAreaIsland(grid, r, c);
+                maxIslanArea = max(maxIslanArea, island);
+            }
+        }
+    }
+
+    return maxIslanArea;
+}
 
 
 
