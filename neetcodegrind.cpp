@@ -1716,6 +1716,108 @@ int maxAreaOfIsland(vector<vector<int>>& grid)
     return maxIslanArea;
 }
 
+/*
+Problem: Matrix Breadth-First Search
+Leet Code Link:
+*/
+int shortestPath(vector<vector<int>>& grid)
+{
+    int ROW = grid.size(), COL = grid[0].size();
+    unordered_set<string> visit;
+    queue<pair<int, int>> queue;
+    queue.push({0, 0});
+    visit.insert("0,0");
+
+    int shortestLength = 0;
+    while (!queue.empty())
+    {
+        int levelSize = queue.size();
+        for(int i=0; i< levelSize; i++)
+        {
+            pair<int,int> currentCell = queue.front();
+            queue.pop();
+
+            if (currentCell.first == ROW - 1 && currentCell.second == COL - 1)
+            {
+                return shortestLength;
+            }
+
+            vector<pair<int,int>> neigbours = {{1,0},{-1,0},{0,1},{0,-1}};
+            for (pair<int,int>& neigbour : neigbours)
+            {
+                int r = currentCell.first + neigbour.first;
+                int c = currentCell.second + neigbour.second;
+                string cell = to_string(r) + "," + to_string(c);
+                if(min(r,c)< 0 || r >= ROW || c >= COL || grid[r][c] == 1 || visit.find(cell) != visit.end())
+                    continue;
+
+                queue.push({r,c});
+                visit.insert(cell);
+            }
+        }
+
+        shortestLength++;
+    }
+
+    return -1;
+}
+
+/*
+Problem: Shortest Path in Binary Matrix
+Leet Code Link: https://leetcode.com/problems/shortest-path-in-binary-matrix/description/
+*/
+int shortestPathBinaryMatrix(vector<vector<int>>& grid)
+{
+    int ROW = grid.size(), COL = grid[0].size();
+    unordered_set<string> visit;
+    queue<pair<int, int>> bfsQueue;
+
+    if (grid[0][0] == 1 || grid[ROW - 1][COL - 1] == 1) {
+        return -1;
+    }
+
+    bfsQueue.push({0, 0});
+    visit.insert("0,0");
+
+    int shortestLength = 0;
+    while (!bfsQueue.empty())
+    {
+        int bfsLevelSize = bfsQueue.size();
+        for (int i=0; i < bfsLevelSize; i++)
+        {
+            pair<int,int> currentCell = bfsQueue.front();
+            bfsQueue.pop();
+            int R = currentCell.first;
+            int C = currentCell.second;
+
+            if (R == ROW - 1 && C == COL - 1)
+            {
+                return shortestLength + 1;
+            }
+
+            vector<pair<int,int>> neigbours = {{0,1},{0,-1},{1,0},{-1,0},{1,1},{1,-1},{-1,1},{-1,-1}};
+            for (pair<int,int> neigbour : neigbours)
+            {
+                int r = R + neigbour.first;
+                int c = C + neigbour.second;
+                string visitedCell = to_string(r)+","+to_string(c);
+                if (min(r,c) < 0 || r >= ROW || c >= COL || visit.find(visitedCell) != visit.end() || grid[r][c] == 1)
+                {
+                    continue;
+                }
+
+                bfsQueue.push({r, c});
+                visit.insert(visitedCell);
+            }
+        }
+        shortestLength++;
+    }
+
+    return -1;
+}
+
+
+
 
 
 
