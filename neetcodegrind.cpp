@@ -1816,6 +1816,76 @@ int shortestPathBinaryMatrix(vector<vector<int>>& grid)
     return -1;
 }
 
+/*
+Problem: Rotting Fruit
+Leet Code Link: https://leetcode.com/problems/rotting-oranges/description/
+*/
+int orangesRotting(vector<vector<int>>& grid)
+{
+    int ROW = grid.size(), COL = grid[0].size();
+    int ripeFruitCount = 0;
+    int minutes = 0;
+    queue<pair<int,int>> bfsQueue;
+
+    for (int i = 0; i < ROW; i++)
+    {
+        for (int j = 0; j < COL; j++)
+        {
+            if(grid[i][j] == 2)
+            {
+                bfsQueue.push({i,j});
+            }
+
+            if(grid[i][j] == 1)
+            {
+                ripeFruitCount++;
+            }
+        }
+    }
+
+    if (ripeFruitCount == 0)
+    {
+        return 0;
+    }
+
+    while (!bfsQueue.empty())
+    {
+        int bfsLevelSize = bfsQueue.size();
+        bool rottenAtBFSLevel = false;
+        for (int i = 0; i < bfsLevelSize; i++)
+        {
+            pair<int,int> cCell = bfsQueue.front();
+            bfsQueue.pop();
+
+            int R = cCell.first;
+            int C = cCell.second;
+
+            vector<pair<int,int>> neigbours = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+            for (pair<int,int> neigbour : neigbours)
+            {
+                int r = R + neigbour.first;
+                int c = C + neigbour.second;
+                if (r < 0 || r >= ROW || c < 0 || c >= COL || grid[r][c] != 1)
+                    continue;
+
+                ripeFruitCount--;
+                bfsQueue.push({r,c});
+                grid[r][c] = 2;
+                rottenAtBFSLevel = true;
+            }
+
+
+        }
+
+        if (rottenAtBFSLevel)
+        {
+            minutes++;
+        }
+    }
+
+    return ripeFruitCount == 0 ? minutes : -1;
+}
+
 
 
 
