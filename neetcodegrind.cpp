@@ -1886,6 +1886,57 @@ int orangesRotting(vector<vector<int>>& grid)
     return ripeFruitCount == 0 ? minutes : -1;
 }
 
+/*
+Problem: Design Graph
+Leet Code Link:
+*/
+class Graph
+{
+private:
+    unordered_map<int, unordered_set<int>> adj_list;
+
+    bool dfsHelper(int src, int dst, unordered_set<int>& visited)
+    {
+        if (src == dst)
+            return true;
+
+        for (const int &neighbor : adj_list[src])
+        {
+            if (visited.find(neighbor) == visited.end())
+            {
+                if (dfsHelper(neighbor, dst, visited))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+public:
+    Graph() {}
+
+    void addEdge(int src, int dst)
+    {
+        adj_list[src].insert(dst);
+    }
+
+    bool removeEdge(int src, int dst)
+    {
+        if (adj_list.find(src) == adj_list.end() || adj_list[src].find(dst) == adj_list[src].end()) {
+            return false;
+        }
+
+        adj_list[src].erase(dst);
+    }
+
+    bool hasPath(int src, int dst)
+    {
+        unordered_set<int> visited;
+        return dfsHelper(src, dst, visited);
+    }
+};
+
+
 
 
 
