@@ -16,6 +16,24 @@
 
 using namespace std;
 
+class Node {
+public:
+    int val;
+    vector<Node*> neighbors;
+    Node() {
+        val = 0;
+        neighbors = vector<Node*>();
+    }
+    Node(int _val) {
+        val = _val;
+        neighbors = vector<Node*>();
+    }
+    Node(int _val, vector<Node*> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+};
+
 /*
 Tree Node Structure
 */
@@ -1935,6 +1953,37 @@ public:
         return dfsHelper(src, dst, visited);
     }
 };
+
+/*
+Problem: Clone Graph
+Leet Code Link: https://leetcode.com/problems/clone-graph/description/
+*/
+Node* DFSCloneGraph(Node* node, map<Node*, Node*>& oldToNew)
+{
+    if (node == nullptr)
+        return nullptr;
+
+    if (oldToNew.count(node))
+    {
+        return oldToNew[node];
+    }
+
+    Node* copy = new Node(node->val);
+    oldToNew[node] = copy;
+
+    for (Node* adjNode : node->neighbors)
+    {
+        copy->neighbors.push_back(DFSCloneGraph(adjNode, oldToNew));
+    }
+
+    return copy;
+}
+
+Node* cloneGraph(Node* node)
+{
+    map<Node*, Node*> oldToNew;
+    return DFSCloneGraph(node, oldToNew);
+}
 
 
 
