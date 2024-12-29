@@ -1985,6 +1985,48 @@ Node* cloneGraph(Node* node)
     return DFSCloneGraph(node, oldToNew);
 }
 
+/*
+Problem: Course Schedule
+Leet Code Link: https://leetcode.com/problems/course-schedule/
+*/
+bool DFSCanFinish(int curr, unordered_map<int, vector<int>>& preMap, unordered_set<int>& visited)
+{
+    if (visited.count(curr))
+        return false;
+
+    if (preMap[curr].empty())
+        return true;
+
+    visited.insert(curr);
+    for (int adj : preMap[curr])
+    {
+        if (!DFSCanFinish(adj, preMap, visited))
+            return false;
+    }
+    visited.erase(curr);
+    preMap[curr].clear();
+
+    return true;
+}
+
+bool canFinish(int numCourses, vector<vector<int>>& prerequisites)
+{
+    unordered_map<int, vector<int>> preMap;
+    unordered_set<int> visited;
+
+    for (const auto& prereq : prerequisites)
+    {
+        preMap[prereq[0]].push_back(prereq[1]);
+    }
+
+    for (int c = 0; c < numCourses; c++)
+    {
+        if (!DFSCanFinish(c, preMap, visited))
+            return false;
+    }
+
+    return true;
+}
 
 
 
