@@ -2028,6 +2028,34 @@ bool canFinish(int numCourses, vector<vector<int>>& prerequisites)
     return true;
 }
 
+/*
+Problem: Climbing Stairs
+Leet Code Link: https://leetcode.com/problems/climbing-stairs/description/
+*/
+int climbStairs(int n)
+{
+    int one = 1;
+    int two = 2;
+
+    if (n == 1) {
+        return one;
+    }
+    if (n == 2) {
+        return two;
+    }
+
+    int result = 0;
+    int i = 3;
+    while (i <= n)
+    {
+        result = one + two;
+        one = two;
+        two = result;
+        i++;
+    }
+
+    return result;
+}
 
 
 
