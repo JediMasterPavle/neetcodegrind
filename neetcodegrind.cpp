@@ -2081,6 +2081,56 @@ int rob(vector<int>& nums)
     return second;
 }
 
+/*
+Problem: Unique Paths
+Leet Code Link: https://leetcode.com/problems/unique-paths/description/
+*/
+int topdownmemoization(int i, int j, int m, int n, vector<vector<int>>& memo)
+{
+    if (i >= m || j >= n)
+        return 0;
+
+    if (i == m - 1 || j == n - 1)
+        return 1;
+
+    if (memo[i][j] != -1)
+        return memo[i][j];
+
+    memo[i][j] = topdownmemoization(i + 1, j, m, n, memo) + topdownmemoization(i, j + 1, m, n, memo);
+
+    return memo[i][j];
+}
+
+//Top-Down approach with momoization
+int uniquePaths(int m, int n)
+{
+    vector<vector<int>>memo(m, vector<int>(n, -1));
+    return topdownmemoization(0, 0, m, n, memo);
+}
+
+//Bottom-Up approach
+int32_t uniquePaths(int m, int n)
+{
+    vector<int> row(n,0);
+    for (int i = m - 1; i >= 0; i--)
+    {
+        vector<int> currentRow(n,1);
+        for (int j = n - 2; j >= 0; j--)
+        {
+            currentRow[j] = currentRow[j+1] + row[j];
+        }
+
+        row = currentRow;
+    }
+
+    return row[0];
+}
+
+
+
+
+
+
 
 
 
