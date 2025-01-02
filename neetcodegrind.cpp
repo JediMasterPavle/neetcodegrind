@@ -2057,6 +2057,31 @@ int climbStairs(int n)
     return result;
 }
 
+/*
+Problem: House Robber
+Leet Code Link: https://leetcode.com/problems/house-robber/
+*/
+int rob(vector<int>& nums)
+{
+    if (nums.size() == 1)
+    {
+        return nums[0];
+    }
+
+    int first = 0;
+    int second = 0;
+
+    for (int num : nums)
+    {
+        int temp = max(num + first, second);
+        first = second;
+        second = temp;
+    }
+
+    return second;
+}
+
+
 
 
 
