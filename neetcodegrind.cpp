@@ -2102,14 +2102,14 @@ int topdownmemoization(int i, int j, int m, int n, vector<vector<int>>& memo)
 }
 
 //Top-Down approach with momoization
-int uniquePaths(int m, int n)
+int uniquePathsTopDown(int m, int n)
 {
     vector<vector<int>>memo(m, vector<int>(n, -1));
     return topdownmemoization(0, 0, m, n, memo);
 }
 
 //Bottom-Up approach
-int32_t uniquePaths(int m, int n)
+int uniquePathsBottomUp(int m, int n)
 {
     vector<int> row(n,0);
     for (int i = m - 1; i >= 0; i--)
@@ -2126,6 +2126,33 @@ int32_t uniquePaths(int m, int n)
     return row[0];
 }
 
+/*
+Problem: Unique Paths 2
+Leet Code Link: https://leetcode.com/problems/unique-paths-ii/
+*/
+int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+    const int ROW = obstacleGrid.size();
+    const int COL = obstacleGrid[0].size();
+    vector<long> dp(COL);
+    dp[COL - 1] = 1;
+
+    for (int r = ROW - 1; r >= 0; --r)
+    {
+        for (int c = COL - 1; c >= 0; --c)
+        {
+            if (obstacleGrid[r][c] == 1)
+            {
+                dp[c] = 0;
+            }
+
+            else if (c + 1 < COL)
+            {
+                dp[c] += dp[c + 1];
+            }
+        }
+    }
+    return dp[0];
+}
 
 
 
