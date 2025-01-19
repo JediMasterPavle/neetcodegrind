@@ -2252,6 +2252,27 @@ int maxSubArray(vector<int>& nums)
     return maxSubArrayLength;
 }
 
+/*
+Problem: Maximum Sum Circular Subarray
+Leet Code Link: https://leetcode.com/problems/maximum-sum-circular-subarray/
+*/
+int maxSubarraySumCircular(vector<int>& nums)
+{
+    int maxSum = nums[0], minSum = nums[0], curMax=0, curMin=0;
+    int totalSum = 0;
+
+    for(int num : nums)
+    {
+        curMax = max(curMax + num, num);
+        maxSum = max(maxSum, curMax);
+        curMin = min(curMin + num, num);
+        minSum = min(minSum, curMin);
+        totalSum+=num;
+    }
+
+    return maxSum>0? max(maxSum, totalSum-minSum) : maxSum;
+}
+
 
 
 
