@@ -2231,8 +2231,26 @@ uint32_t reverseBits(uint32_t n)
     return res;
 }
 
+/*
+Problem: Resverse Maximum Subarray
+Leet Code Link: https://leetcode.com/problems/maximum-subarray/
+*/
+int maxSubArray(vector<int>& nums)
+{
+    if (nums.size() == 0)
+        return 0;
 
+    int maxSubArrayLength = nums[0] , currentMaxAraryLength = 0;
 
+    for (int& num : nums)
+    {
+        currentMaxAraryLength = max(currentMaxAraryLength +  num, num);
+
+        maxSubArrayLength = max(maxSubArrayLength,currentMaxAraryLength);
+    }
+
+    return maxSubArrayLength;
+}
 
 
 
