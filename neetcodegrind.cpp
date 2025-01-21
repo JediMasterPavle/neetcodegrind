@@ -2273,6 +2273,45 @@ int maxSubarraySumCircular(vector<int>& nums)
     return maxSum>0? max(maxSum, totalSum-minSum) : maxSum;
 }
 
+/*
+Problem: Longest Turbulent Subarray
+Leet Code Link: https://leetcode.com/problems/longest-turbulent-subarray/
+*/
+int maxTurbulenceSize(vector<int>& arr)
+{
+    int n = arr.size();
+    if (n <= 1)
+    {
+        return n;
+    }
+
+    int pos = 1;
+    int neg = 1;
+    int maxLen = 1;
+
+    for (int i = 1; i < n; ++i)
+    {
+        if (arr[i] > arr[i - 1])
+        {
+            pos = neg + 1;
+            neg = 1;
+        }
+        else if (arr[i] < arr[i - 1])
+        {
+            neg = pos + 1;
+            pos = 1;
+        }
+        else
+        {
+            pos = 1;
+            neg = 1;
+        }
+
+        maxLen = max(maxLen, max(pos, neg));
+    }
+
+    return maxLen;
+}
 
 
 
