@@ -2339,6 +2339,32 @@ bool containsNearbyDuplicate(vector<int>& nums, int k)
     return false;
 }
 
+/*
+Problem: Number of Sub-arrays of Size K and Average Greater than or Equal to Threshold
+Leet Code Link: https://leetcode.com/problems/number-of-sub-arrays-of-size-k-and-average-greater-than-or-equal-to-threshold/description/
+*/
+int numOfSubarrays(vector<int>& arr, int k, int threshold)
+{
+    vector<int> window;
+    int total = 0;
+
+    for (int right = 0; right < arr.size(); right++)
+    {
+        window.push_back(arr[right]);
+
+        if (window.size() > k)
+        {
+            window.erase(window.begin());
+        }
+
+        if ((window.size() == k) && (accumulate(window.begin(), window.end(), 0) / k >= threshold))
+        {
+            total++;
+        }
+    }
+
+    return total;
+}
 
 
 /*
