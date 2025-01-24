@@ -2366,6 +2366,34 @@ int numOfSubarrays(vector<int>& arr, int k, int threshold)
     return total;
 }
 
+/*
+Problem: Minimum Size Subarray Sum
+Leet Code Link: https://leetcode.com/problems/minimum-size-subarray-sum/
+*/
+int minSubArrayLen(int target, vector<int>& nums)
+{
+    int max = nums.size()+1;
+    int total = 0;
+    int left = 0;
+
+    for (int right = 0; right < nums.size(); right++)
+    {
+        total += nums[right];
+        while (total >= target)
+        {
+            max = min(right - left + 1, max);
+            total -= nums[left];
+            left++;
+        }
+    }
+
+    return (max == nums.size() + 1 ? 0 : max);
+}
+
+
+
+
+
 
 /*
 This is the main function which doesn't do anything,
