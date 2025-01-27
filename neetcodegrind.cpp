@@ -2415,6 +2415,12 @@ int lengthOfLongestSubstring(string s)
     return result;
 }
 
+/*
+Problem: Longest Repeating Character Replacement
+Leet Code Link: https://leetcode.com/problems/longest-repeating-character-replacement/
+*/
+
+
 
 
 
