@@ -2390,6 +2390,31 @@ int minSubArrayLen(int target, vector<int>& nums)
     return (max == nums.size() + 1 ? 0 : max);
 }
 
+/*
+Problem: Longest Substring Without Repeating Characters
+Leet Code Link: https://leetcode.com/problems/longest-substring-without-repeating-characters/
+*/
+int lengthOfLongestSubstring(string s)
+{
+    int sSize = s.size();
+    unordered_map<char, int> windowMap;
+    int left = 0;
+    int result = 0;
+
+    for (int right = 0; right < sSize; right++)
+    {
+        if (windowMap.find(s[right]) != windowMap.end())
+        {
+            left = max(left, windowMap[s[right]] + 1);
+        }
+
+        windowMap[s[right]] = right;
+        result = max(result, right - left + 1);
+    }
+
+    return result;
+}
+
 
 
 
