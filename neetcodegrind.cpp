@@ -2463,6 +2463,41 @@ class NumArray {
         }
     };
 
+/*
+Problem: Range Sum Query 2D - Immutable
+Leet Code Link: Problem: https://leetcode.com/problems/range-sum-query-2d-immutable/
+*/
+class NumMatrix {
+    public:
+        vector<vector<int>> prefixMatrix;
+
+        NumMatrix(vector<vector<int>>& matrix)
+        {
+            if (matrix.size() == 0 || matrix[0].size() == 0)
+                return;
+
+            prefixMatrix.resize(matrix.size(), vector<int>(matrix[0].size() + 1,0));
+            for (int r = 0; r < matrix.size(); r++)
+            {
+                for (int c = 0; c < matrix[0].size(); c++)
+                {
+                    prefixMatrix[r][c + 1] = prefixMatrix[r][c] + matrix[r][c];
+                }
+            }
+        }
+
+        int sumRegion(int row1, int col1, int row2, int col2)
+        {
+            int sum = 0;
+            for (int row = row1; row <= row2; row++)
+            {
+                sum += prefixMatrix[row][col2+1] - prefixMatrix[row][col1];
+            }
+
+            return sum;
+        }
+    };
+
 
 
 
