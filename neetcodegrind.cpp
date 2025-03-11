@@ -2419,7 +2419,29 @@ int lengthOfLongestSubstring(string s)
 Problem: Longest Repeating Character Replacement
 Leet Code Link: https://leetcode.com/problems/longest-repeating-character-replacement/
 */
+int characterReplacement(std::string s, int k)
+    {
+        unordered_map<char, int> frequencyCount;
+        int result = 0;
+        int left = 0;
+        int maxFrequency = 0;
 
+        for (int right = 0; right < s.size(); right++)
+        {
+            frequencyCount[s[right]]++;
+            maxFrequency = max(maxFrequency, frequencyCount[s[right]]);
+
+            if ((right - left + 1) - maxFrequency > k)
+            {
+                frequencyCount[s[left]]--;
+                left++;
+            }
+
+            result = max(result, (right - left + 1));
+        }
+
+        return result;
+    }
 
 
 
