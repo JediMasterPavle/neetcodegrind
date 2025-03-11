@@ -2498,7 +2498,31 @@ class NumMatrix {
         }
     };
 
+/*
+Problem: Find Pivot Index
+Leet Code Link: Problem: https://leetcode.com/problems/find-pivot-index/description/
+*/
+int pivotIndex(vector<int>& nums)
+{
+    int numsSize = nums.size();
+    vector<int> prefixSum(numsSize + 1, 0);
 
+    for (int i = 0; i< numsSize; i++)
+    {
+        prefixSum[i + 1] = prefixSum[i] + nums[i];
+    }
+
+    int sizePrefix = prefixSum.size();
+    for (int p = 1; p < sizePrefix; p++)
+    {
+        if (prefixSum[p-1] == (prefixSum[sizePrefix - 1] - prefixSum[p]))
+        {
+            return p - 1;
+        }
+    }
+
+    return -1;
+}
 
 
 
