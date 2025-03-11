@@ -2524,6 +2524,42 @@ int pivotIndex(vector<int>& nums)
     return -1;
 }
 
+/*
+Problem: Subarray Sum Equals K
+Leet Code Link: Problem: https://leetcode.com/problems/subarray-sum-equals-k/
+*/
+int subarraySum(vector<int>& nums, int k)
+{
+    int numsSize = nums.size();
+    int sum = 0;
+    int count = 0;
+    unordered_map<int,int> sums;
+
+    for (int p = 0; p < numsSize; p++)
+    {
+        sum += nums[p];
+        if (sum == k)
+        {
+            count++;
+        }
+
+        if (sums.find(sum - k) != sums.end())
+        {
+            count += sums[sum - k];
+        }
+
+        sums[sum]++;
+    }
+
+    return count;
+}
+
+
+
+
+
+
+
 
 
 
