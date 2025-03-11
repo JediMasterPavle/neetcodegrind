@@ -2443,6 +2443,27 @@ int characterReplacement(std::string s, int k)
         return result;
     }
 
+/*
+Problem: Range Sum Query - Immutable
+Leet Code Link: Problem: https://leetcode.com/problems/range-sum-query-immutable/
+*/
+class NumArray {
+    public:
+        vector<int> sum;
+
+        NumArray(vector<int>& nums) {
+            sum.resize(nums.size() + 1, 0);
+            for (int i = 0; i < nums.size(); i++) {
+                sum[i + 1] = sum[i] + nums[i];
+            }
+        }
+
+        int sumRange(int left, int right) {
+            return sum[right + 1] - sum[left];
+        }
+    };
+
+
 
 
 
