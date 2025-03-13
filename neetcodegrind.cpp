@@ -2641,7 +2641,38 @@ ListNode *detectCycle(ListNode *head)
     return fast;
 }
 
+/*
+Problem: Find the Duplicate Number
+Leet Code Link: https://leetcode.com/problems/find-the-duplicate-number/description/
+*/
+int findDuplicate(vector<int>& nums)
+{
+    if (nums.size() == 1)
+    {
+        return nums[0];
+    }
 
+    int slow = 0;
+    int fast = 0;
+
+    while (true)
+    {
+        slow = nums[slow];
+        fast = nums[nums[fast]];
+
+        if (fast == slow)
+            break;
+    }
+
+    fast = 0;
+    while (fast != slow)
+    {
+        slow = nums[slow];
+        fast = nums[fast];
+    }
+
+    return fast;
+}
 
 
 
