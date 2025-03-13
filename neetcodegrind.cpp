@@ -2554,8 +2554,23 @@ int subarraySum(vector<int>& nums, int k)
     return count;
 }
 
+/*
+Problem: Middle of the Linked List
+Leet Code Link: Problem: https://leetcode.com/problems/middle-of-the-linked-list/
+*/
+ListNode* middleNode(ListNode* head)
+{
+    ListNode* slow = head;
+    ListNode* fast = head;
 
+    while (fast != nullptr && fast->next != nullptr)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
 
+    return slow;
+}
 
 
 
