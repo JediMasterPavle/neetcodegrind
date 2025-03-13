@@ -2572,6 +2572,43 @@ ListNode* middleNode(ListNode* head)
     return slow;
 }
 
+/*
+Problem: Maximum Twin Sum of a Linked List
+Leet Code Link: Problem: https://leetcode.com/problems/maximum-twin-sum-of-a-linked-list/
+*/
+int pairSum(ListNode* head)
+{
+    ListNode* slow = head;
+    ListNode* fast = head;
+
+    while (fast != nullptr && fast->next != nullptr)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    ListNode* nextNode;
+    ListNode* prev = nullptr;
+    while (slow != nullptr)
+    {
+        nextNode = slow->next;
+        slow->next = prev;
+        prev = slow;
+        slow = nextNode;
+    }
+
+    int maximumSum = 0;
+    ListNode* start = head;
+    while (prev != nullptr)
+    {
+        maximumSum = max(maximumSum, start->val + prev->val);
+        prev = prev->next;
+        start = start->next;
+    }
+
+    return maximumSum;
+}
+
 
 
 
