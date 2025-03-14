@@ -71,6 +71,16 @@ Linked List Structure
  };
 
 /*
+Trie Node Structure
+*/
+struct TrieNode
+{
+    public:
+        unordered_map<char, TrieNode*> children;
+        bool word = false;
+};
+
+/*
 Definition for a Pair
 */
 class Pair {
@@ -2673,6 +2683,67 @@ int findDuplicate(vector<int>& nums)
 
     return fast;
 }
+
+
+/*
+Problem: Implement Trie (Prefix Tree)
+Leet Code Link: https://leetcode.com/problems/implement-trie-prefix-tree/description/
+*/
+class Trie {
+public:
+
+    TrieNode* root;
+
+    Trie(): root(new TrieNode()) {}
+
+    void insert(string word)
+    {
+        TrieNode* current = root;
+        for (char c : word)
+        {
+            if (current->children.count(c) == 0)
+            {
+                current->children[c] = new TrieNode();
+            }
+
+            current = current->children[c];
+        }
+
+        current->word = true;
+    }
+
+    bool search(string word)
+    {
+        TrieNode* current = root;
+        for (char c : word)
+        {
+            if (current->children.count(c) == 0)
+            {
+                return false;
+            }
+
+            current = current->children[c];
+        }
+
+        return current->word;
+    }
+
+    bool startsWith(string prefix)
+    {
+        TrieNode* current = root;
+        for (char c : prefix)
+        {
+            if (current->children.count(c) == 0)
+            {
+                return false;
+            }
+
+            current = current->children[c];
+        }
+
+        return true;
+    }
+};
 
 
 
