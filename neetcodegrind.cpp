@@ -80,6 +80,14 @@ struct TrieNode
         bool word = false;
 };
 
+class TrieNode2 {
+    public:
+        vector<TrieNode2*> children;
+        bool word;
+
+        TrieNode2() : children(26, nullptr), word(false) {}
+};
+
 /*
 Definition for a Pair
 */
@@ -2745,6 +2753,70 @@ public:
     }
 };
 
+/*
+Problem: Design Add and Search Words Data Structure
+Leet Code Link: https://leetcode.com/problems/design-add-and-search-words-data-structure/description/
+*/
+class WordDictionary {
+public:
+
+    TrieNode2* root;
+
+    WordDictionary(): root(new TrieNode2()) {
+
+    }
+
+    void addWord(string word)
+    {
+        TrieNode2* curr = root;
+        for (char c : word)
+        {
+            if (curr->children[c - 'a'] == nullptr)
+            {
+                curr->children[c - 'a'] = new TrieNode2();
+            }
+
+            curr = curr->children[c - 'a'];
+        }
+
+        curr->word = true;
+    }
+
+    bool search(string word)
+    {
+        return dfsSearch(word, 0, root);
+    }
+
+    bool dfsSearch(string word, int j, TrieNode2* root)
+    {
+        int wordSize = word.size();
+        TrieNode2* current = root;
+
+        for (int i = j; i < wordSize; i++)
+        {
+            char chr = word[i];
+            if (chr == '.')
+            {
+                for (TrieNode2* nextChar : current->children)
+                {
+                    if (nextChar != nullptr && dfsSearch(word, i + 1, nextChar))
+                        return true;
+                }
+
+                return false;
+            }
+            else
+            {
+                if (current->children[chr - 'a'] == nullptr)
+                    return false;
+
+                current = current->children[chr - 'a'];
+            }
+        }
+
+        return current->word;
+    }
+};
 
 
 
