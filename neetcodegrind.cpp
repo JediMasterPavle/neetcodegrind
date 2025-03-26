@@ -2894,7 +2894,97 @@ class Solution
         }
 };
 
+/*
+Problem: Prefix and Suffix Search
+Leet Code Link: https://leetcode.com/problems/prefix-and-suffix-search/description/
+*/
+struct TrieWF
+{
+    int pos = -1, maxPos = -1;
+    string fullWord = "";
+    TrieWF* children[26];
+};
 
+class WordFilter
+{
+    public:
+    TrieWF* root = new TrieWF(), *revRoot = new TrieWF(), *curr;
+        int res;
+
+        void dfs(TrieWF* root, string suffix)
+        {
+            if (root == nullptr || root->maxPos < res)
+                return;
+
+            if (root->pos != -1 && 0 == root->fullWord.compare(root->fullWord.size() - suffix.size(), suffix.size(), suffix))
+            {
+                res = max(res, root->pos);
+            }
+
+            for (auto child: root->children)
+            {
+                if (child)
+                {
+                    dfs(child, suffix);
+                }
+            }
+        }
+
+        void populateTrie(string word, TrieWF* root, int i) {
+            curr = root;
+            for (char c: word)
+            {
+                if (!curr->children[c - 'a'])
+                {
+                    curr->children[c - 'a'] = new TrieWF();
+                }
+
+                curr = curr->children[c - 'a'];
+                curr->maxPos = max(curr->maxPos, i);
+            }
+            curr->pos = i;
+            curr->fullWord = word;
+        }
+
+        WordFilter(vector<string>& words)
+        {
+            for (int i = 0, lmt = words.size(); i < lmt; i++)
+            {
+                string word = words[i];
+                populateTrie(word, root, i);
+                reverse(begin(word), end(word));
+                populateTrie(word, revRoot, i);
+            }
+        }
+
+        int f(string prefix, string suffix) {
+            if (prefix.size() < suffix.size())
+            {
+                curr = revRoot;
+                reverse(prefix.begin(), prefix.end());
+                reverse(suffix.begin(), suffix.end());
+                swap(prefix, suffix);
+            }
+            else
+            {
+                curr = root;
+            }
+
+            res = -1;
+            for (char c: prefix)
+            {
+                if (curr == nullptr)
+                {
+                    return res;
+                }
+
+                curr = curr->children[c - 'a'];
+            }
+
+            dfs(curr, suffix);
+            return res;
+        }
+};
 
 
 /*
