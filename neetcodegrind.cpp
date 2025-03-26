@@ -2818,6 +2818,81 @@ public:
     }
 };
 
+/*
+Problem: Word Search II
+Leet Code Link: https://leetcode.com/problems/word-search-ii/description/
+*/
+class Solution
+{
+    public:
+        int directions[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+        void addWord(TrieNode* current, string word)
+        {
+            for (auto ch : word)
+            {
+                if (current->children[ch - 'a'] == nullptr)
+                {
+                    current->children[ch - 'a'] = new TrieNode();
+                }
+
+                current = current->children[ch - 'a'];
+            }
+
+            current->word = true;
+        }
+
+        void dfs(vector<string>& answer, string valid, TrieNode* current, int i, int j,vector<vector<char>>& board,vector<vector<bool>>& visited)
+        {
+            if (current == nullptr)
+                return;
+
+            if (current->word){
+                answer.push_back(valid);
+                current->word = false;
+            }
+
+            visited[i][j] = true;
+
+            for (int dir = 0; dir < 4; dir++)
+            {
+                int upX = i + directions[dir][0];
+                int upY = j + directions[dir][1];
+
+                if (upX >= 0 && upX < board.size() && upY >= 0 && upY < board[0].size() && !visited[upX][upY] && current->children[board[upX][upY] - 'a'] != nullptr)
+                {
+                    dfs(answer, valid + board[upX][upY], current->children[board[upX][upY] - 'a'], upX, upY, board, visited);
+                }
+            }
+
+            visited[i][j] = false;
+        }
+
+        vector<string> findWords(vector<vector<char>>& board, vector<string>& words)
+        {
+            TrieNode* trieWords = new TrieNode();
+            int n = board.size(), m = board[0].size();
+            vector<vector<bool>> visited(n,vector<bool>(m,false));
+
+            for (auto word : words)
+            {
+                addWord(trieWords, word);
+            }
+
+            vector<string> answer;
+            for (int i = 0; i < n; i++) {
+                for (auto j = 0; j < m; j++) {
+                    char character = board[i][j];
+                    if (trieWords->children[character-'a'] != nullptr)
+                    {
+                        dfs(answer, string(1, character), trieWords->children[character-'a'], i, j, board, visited);
+                    }
+                }
+            }
+
+            return answer;
+        }
+};
 
 
 
