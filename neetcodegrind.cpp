@@ -2986,6 +2986,80 @@ class WordFilter
         }
 };
 
+/*
+Problem: Redundant Connection
+Leet Code Link: https://leetcode.com/problems/redundant-connection/description/
+*/
+class DSU
+{
+    public:
+        unordered_map<int, int> parent;
+        unordered_map<int, int> rank;
+
+        DSU(int n)
+        {
+            for (int i = 1; i <= n; i++)
+            {
+                parent[i] = i;
+                rank[i] = 0;
+            }
+        }
+
+        int DSUfind(int n)
+        {
+            int p = parent[n];
+            while (p != parent[p]) {
+                parent[p] = parent[parent[p]];
+                p = parent[p];
+            }
+            return p;
+        }
+
+        bool DSUunion(int one, int two)
+        {
+            int first = DSUfind(one);
+            int second = DSUfind(two);
+
+            if (first == second)
+                return false;
+
+            if (rank[first] > rank[second])
+            {
+                parent[second] = first;
+            }
+            else if (rank[first] < rank[second])
+            {
+                parent[first] = second;
+            }
+            else
+            {
+                parent[first] = second;
+                rank[second] += 1;
+            }
+
+            return true;
+        }
+};
+
+class Redundant
+{
+    public:
+        vector<int> findRedundantConnection(vector<vector<int>>& edges)
+        {
+            int n = edges.size();
+            DSU dsu(n);
+
+            for (auto edge : edges)
+            {
+                if (!dsu.DSUunion(edge[0] - 1, edge[1] - 1))
+                {
+                    return edge;
+                }
+            }
+
+            return {};
+        }
+};
 
 /*
 This is the main function which doesn't do anything,
