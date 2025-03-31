@@ -3062,6 +3062,86 @@ class Redundant
 };
 
 /*
+Problem: Accounts Merge
+Leet Code Link: https://leetcode.com/problems/accounts-merge/description/
+*/
+class DSUString {
+    public:
+        unordered_map<string, string> parent;  // Maps email to its representative parent
+        unordered_map<string, int> rank;       // Stores the rank for union by rank
+
+        string find(string email) {
+            if (parent[email] != email) {
+                parent[email] = find(parent[email]);  // Path compression
+            }
+            return parent[email];
+        }
+
+        void unite(string email1, string email2) {
+            string root1 = find(email1);
+            string root2 = find(email2);
+
+            if (root1 != root2) {
+                if (rank[root1] > rank[root2]) {
+                    parent[root2] = root1;
+                } else if (rank[root1] < rank[root2]) {
+                    parent[root1] = root2;
+                } else {
+                    parent[root1] = root2;
+                    rank[root2]++;
+                }
+            }
+        }
+};
+
+class AccountMerge {
+    public:
+        vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+            DSUString dsu;
+            unordered_map<string, string> emailToName;  // Maps email to username
+            unordered_map<string, string> emailToParent; // Keeps track of parents
+
+            // Step 1: Initialize DSU and map emails to their user
+            for (const auto& account : accounts) {
+                string name = account[0];
+                for (int i = 1; i < account.size(); i++) {
+                    string email = account[i];
+                    emailToName[email] = name;
+                    if (dsu.parent.find(email) == dsu.parent.end()) {
+                        dsu.parent[email] = email;
+                        dsu.rank[email] = 0;
+                    }
+                    if (i > 1) {
+                        dsu.unite(account[1], email); // Merge all emails in the same account
+                    }
+                }
+            }
+
+            // Step 2: Group emails by their DSU root parent
+            unordered_map<string, vector<string>> mergedAccounts;
+            for (const auto& [email, _] : emailToName) {
+                string root = dsu.find(email);
+                mergedAccounts[root].push_back(email);
+            }
+
+            // Step 3: Format the output
+            vector<vector<string>> result;
+            for (auto& [root, emails] : mergedAccounts) {
+                sort(emails.begin(), emails.end());  // Sort emails lexicographically
+                emails.insert(emails.begin(), emailToName[root]); // Insert username at the start
+                result.push_back(emails);
+            }
+
+            return result;
+        }
+};
+
+
+
+
+
+
+/*
 This is the main function which doesn't do anything,
 the functions/classes above will be answers to NeetCode questions
 */
