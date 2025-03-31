@@ -3137,6 +3137,24 @@ class AccountMerge {
 };
 
 
+/*
+Problem: Number of Connected Components in an Undirected Graph
+Leet Code Link: https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/
+*/
+int countComponents(int n, vector<vector<int>>& edges)
+{
+    //DSU is implemented for problem "Redundant Connection"
+    DSU dsu(n);
+    int connected = n;
+
+    for (auto& edge : edges) {
+        if (dsu.DSUunion(edge[0], edge[1])) {
+            connected--;
+        }
+    }
+
+    return connected;
+}
 
 
 
