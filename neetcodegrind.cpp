@@ -3156,6 +3156,112 @@ int countComponents(int n, vector<vector<int>>& edges)
     return connected;
 }
 
+/*
+Problem: Design Segment Tree
+Leet Code Link: https://neetcode.io/problems/segmentTree
+*/
+struct SegmentTreeNode
+{
+    int sum, L, R;
+    SegmentTreeNode* left;
+    SegmentTreeNode* right;
+    SegmentTreeNode(int total, int L, int R) : sum(total), L(L), R(R), left(nullptr), right(nullptr) {}
+};
+
+class SegmentTree
+{
+    private:
+        void updateHelper(SegmentTreeNode* root, int index, int val)
+        {
+            if (root->L == root->R)
+            {
+                root->sum = val;
+                return;
+            }
+
+            int M = (root->L + root->R) / 2;
+            if (index > M)
+            {
+                updateHelper(root->right, index, val);
+            }
+            else
+            {
+                updateHelper(root->left, index, val);
+            }
+
+            root->sum = root->left->sum + root->right->sum;
+        }
+
+        int queryHelper(SegmentTreeNode* root, int L, int R)
+        {
+            if (root == nullptr)
+            {
+                return 0;
+            }
+
+            if (L <= root->L && root->R <= R)
+            {
+                return root->sum;
+            }
+
+            if (R < root->L || L > root->R)
+            {
+                return 0;
+            }
+
+            return queryHelper(root->left, L, R) + queryHelper(root->right, L, R);
+        }
+
+    public:
+        SegmentTreeNode* stn;
+
+        SegmentTree(vector<int>& nums)
+        {
+            if (!nums.empty())
+            {
+                stn = build(nums, 0, nums.size() - 1);
+            }
+            else
+            {
+                stn = nullptr;
+            }
+        }
+
+        SegmentTreeNode* build(vector<int>& nums, int L, int R)
+        {
+            if (L == R)
+            {
+                return new SegmentTreeNode(nums[L], L, R);
+            }
+
+            int mid = (L + R) / 2;
+            SegmentTreeNode* root = new SegmentTreeNode(0, L, R);
+            root->left = build(nums, L, mid);
+            root->right = build(nums, mid + 1, R);
+
+            root->sum = root->right->sum + root->left->sum;
+            return root;
+        }
+
+        void update(int index, int val)
+        {
+            updateHelper(stn, index, val);
+        }
+
+        int query(int L, int R)
+        {
+            return queryHelper(stn, L, R);
+        }
+};
+
+
+
+
+
+
+
+
+
 
 
 
