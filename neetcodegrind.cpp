@@ -3254,6 +3254,96 @@ class SegmentTree
         }
 };
 
+/*
+Problem: Range Sum Query - Mutable
+Leet Code Link: https://leetcode.com/problems/range-sum-query-mutable/description/
+*/
+class SegmentTreeNumArray
+{
+    private:
+        SegmentTreeNode* stn;
+
+        void updateHelper(SegmentTreeNode* stn, int index, int val)
+        {
+            if (stn->L == stn->R)
+            {
+                stn->sum = val;
+                return;
+            }
+
+            int mid = (stn->L + stn->R) / 2;
+            if (index > mid)
+            {
+                updateHelper(stn->right, index, val);
+            }
+            else
+            {
+                updateHelper(stn->left, index, val);
+            }
+
+            stn->sum = stn->left->sum + stn->right->sum;
+        }
+
+        int sumRangeHelper(SegmentTreeNode* stn, int left, int right)
+        {
+            if (stn == nullptr)
+            {
+                return 0;
+            }
+
+            if (left <= stn->L && stn->R <= right)
+            {
+                return stn->sum;
+            }
+
+            if (right < stn->L || left > stn->R)
+            {
+                return 0;
+            }
+
+            return sumRangeHelper(stn->left, left, right) + sumRangeHelper(stn->right, left, right);
+        }
+
+    public:
+        SegmentTreeNumArray(vector<int>& nums)
+        {
+            if (!nums.empty())
+            {
+                stn = build(nums, 0, nums.size() - 1);
+            }
+            else
+            {
+                stn = nullptr;
+            }
+        }
+
+        SegmentTreeNode* build(vector<int>& nums, int L, int R)
+        {
+            if (L == R)
+            {
+                return new SegmentTreeNode(nums[L], L, R);
+            }
+
+            int mid = (L + R) / 2;
+            SegmentTreeNode* root = new SegmentTreeNode(0, L, R);
+            root->left = build(nums, L, mid);
+            root->right = build(nums, mid + 1, R);
+            root->sum = root->left->sum + root->right->sum;
+
+            return root;
+        }
+
+        void update(int index, int val)
+        {
+            updateHelper(stn, index, val);
+        }
+
+        int sumRange(int left, int right)
+        {
+            return sumRangeHelper(stn, left, right);
+        }
+};
+
 
 
 
