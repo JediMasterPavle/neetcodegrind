@@ -3344,6 +3344,94 @@ class SegmentTreeNumArray
         }
 };
 
+/*
+Problem: Queue Reconstruction by Height
+Leet Code Link: https://leetcode.com/problems/queue-reconstruction-by-height/description/
+*/
+class SegmentTreeQueueReconstructionByHeight
+{
+    int count = 0;
+    int L, R;
+    SegmentTreeQueueReconstructionByHeight* right = nullptr;
+    SegmentTreeQueueReconstructionByHeight* left = nullptr;
+
+    public:
+    SegmentTreeQueueReconstructionByHeight(int count, int L, int R): count{count}, L{L}, R{R}{}
+
+        static SegmentTreeQueueReconstructionByHeight* build(int L, int R)
+        {
+            if (L == R) return new SegmentTreeQueueReconstructionByHeight(1, L, R);
+
+            SegmentTreeQueueReconstructionByHeight* node = new SegmentTreeQueueReconstructionByHeight(0, L, R);
+            int M = (L + R) / 2;
+
+            node->left = SegmentTreeQueueReconstructionByHeight::build(L, M);
+            node->right = SegmentTreeQueueReconstructionByHeight::build(M + 1, R);
+            node->count = node->right->count + node->left->count;
+            return node;
+        }
+
+        void update(int index)
+        {
+            if (L == R) {
+                this->count = 0;
+                return;
+            }
+
+            int M = (L + R) / 2;
+
+            if (index <= M) {
+                this->left->update(index);
+            }
+            else if (index > M)
+            {
+                this->right->update(index);
+            }
+            this->count = this->right->count + this->left->count;
+        }
+
+        int getIndex(int k)
+        {
+            if (L == R) return L;
+
+            if (k > this->left->count)
+            {
+                return this->right->getIndex(k - this->left->count);
+            }
+            else if (k <= this->left->count)
+            {
+                return this->left->getIndex(k);
+            }
+            return -1;
+        }
+};
+
+class QueueReconstructionByHeight
+{
+    public:
+        vector<vector<int>> reconstructQueue(vector<vector<int>>& people)
+        {
+            sort(people.begin(), people.end(), [](vector<int>& a, vector<int>& b)
+            {
+                return (a[0] < b[0]) || (a[0] == b[0] && a[1] > b[1]);
+            });
+
+            int size = people.size();
+            const vector<int> empty = {-1, -1};
+            vector<vector<int>> result(size, empty);
+
+            SegmentTreeQueueReconstructionByHeight* root = SegmentTreeQueueReconstructionByHeight::build(0, size-1);
+
+            for (const auto& person: people) {
+                int idx = root->getIndex(person[1]+1);
+                root->update(idx);
+                result[idx] = person;
+            }
+            return result;
+        }
+};
+
+
 
 
 
