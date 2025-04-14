@@ -3431,6 +3431,103 @@ class QueueReconstructionByHeight
         }
 };
 
+/*
+Problem: Longest Increasing Subsequence II
+Leet Code Link: https://leetcode.com/problems/longest-increasing-subsequence-ii/description/
+*/
+class SegmentTreeLengthOfLIS
+{
+    private:
+        int n;
+        vector<int> tree;
+
+        void updateTree(int index, int val, int L, int R, int pos)
+        {
+
+            if (L == R)
+            {
+                tree[pos] = val;
+                return;
+            }
+
+            int M = L + (R - L) / 2;
+
+            if (index <= M)
+            {
+                updateTree(index, val, L, M, 2 * pos + 1);
+            }
+            else
+            {
+                updateTree(index, val, M + 1, R, 2 * pos + 2);
+            }
+
+            tree[pos] = max(tree[2 * pos + 1], tree[2 * pos + 2]);
+        }
+
+        int rangeQuery(int QL, int QR, int L, int R, int pos)
+        {
+            if (L > QR || R < QL)
+            {
+                return 0;
+            }
+
+            if (QL <= L && R <= QR)
+            {
+                return tree[pos];
+            }
+
+            int M = L + (R - L) / 2;
+
+            return max(rangeQuery(QL, QR, L, M, 2 * pos + 1), rangeQuery(QL, QR, M + 1, R, 2 * pos + 2) );
+        }
+
+    public:
+
+        SegmentTreeLengthOfLIS(int size) : n(size)
+        {
+            int total_nodes = 2 * n - 1;
+            tree.resize(total_nodes, 0);
+        }
+
+        int rangeMaxQuery(int QL, int QR)
+        {
+            return rangeQuery(QL, QR, 0, n-1, 0);
+        }
+
+        void update(int index, int val)
+        {
+            updateTree(index, val, 0, n-1, 0);
+        }
+
+        int getMaxOverAll()
+        {
+            return tree[0]; // root node represent the max over the whole range
+        }
+    };
+
+    class LengthOfLIS
+    {
+        public:
+
+            int lengthOfLIS(vector<int>& nums, int k)
+            {
+                int max_val = *max_element(nums.begin(), nums.end());
+                int idx = 0;
+                while ((1 << idx) < max_val) idx++;
+
+                int n = (1 << idx) + 1;
+                SegmentTreeLengthOfLIS tree(n);
+
+                for (int num: nums)
+                {
+                    int LIS = tree.rangeMaxQuery(max(0, num-k), num-1);
+                    tree.update(num, LIS+1);
+                }
+
+                return tree.getMaxOverAll();
+            }
+};
+
 
 
 
