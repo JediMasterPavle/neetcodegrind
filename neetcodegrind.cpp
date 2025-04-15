@@ -3528,8 +3528,58 @@ class SegmentTreeLengthOfLIS
             }
 };
 
+/*
+Problem: My Calendar I
+Leet Code Link: https://leetcode.com/problems/my-calendar-i/description/
+*/
+class MyCalendar
+{
+    private:
+        struct segment
+        {
+            public:
+                int start, end;
+                segment* left;
+                segment* right;
+                segment(int s, int e): start(s), end(e), left(nullptr), right(nullptr){}
+        };
 
+    public:
+        segment* root;
+        MyCalendar() {
+            root = new segment(0, 0);
+        }
 
+        bool book(int start, int end)
+        {
+            return bookAvail(root, start, end);
+        }
+
+        bool bookAvail(segment* root, int start, int end)
+        {
+            if(end <= root->start)
+            {
+                if(root->left == nullptr)
+                {
+                    root->left = new segment(start, end);
+                    return true;
+                }
+
+                return bookAvail(root->left, start, end);
+            }
+            else if(start >= root->end)
+            {
+                if(root->right == nullptr)
+                {
+                    root->right = new segment(start, end);
+                    return true;
+                }
+                return bookAvail(root->right, start, end);
+            }
+
+            else return false;
+        }
+};
 
 
 
