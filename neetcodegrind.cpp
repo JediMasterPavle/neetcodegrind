@@ -9,6 +9,7 @@
 #include <random>
 #include <set>
 #include <sstream>
+#include <stack>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -3581,7 +3582,48 @@ class MyCalendar
         }
 };
 
+/*
+Problem: Binary Search Tree Iterator
+Leet Code Link: https://leetcode.com/problems/binary-search-tree-iterator/description/
+*/
+class BSTIterator {
+    private:
+        stack<TreeNode*> inOrder;
 
+    public:
+
+        BSTIterator(TreeNode* root)
+        {
+            TreeNode* current = root;
+            while (current != nullptr)
+            {
+                inOrder.push(current);
+                current = current->left;
+            }
+        }
+
+        int next()
+        {
+            TreeNode* current = inOrder.top();
+            inOrder.pop();
+            if (current->right != nullptr)
+            {
+                TreeNode* node = current->right;
+                while (node != nullptr)
+                {
+                    inOrder.push(node);
+                    node = node->left;
+                }
+            }
+
+            return current->val;
+        }
+
+        bool hasNext()
+        {
+            return !inOrder.empty();
+        }
+};
 
 
 
