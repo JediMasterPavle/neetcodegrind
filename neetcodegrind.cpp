@@ -3625,6 +3625,47 @@ class BSTIterator {
         }
 };
 
+/*
+Problem: Binary Tree Preorder Traversal
+Leet Code Link: https://leetcode.com/problems/binary-tree-preorder-traversal/description/
+*/
+vector<int> preorderTraversal(TreeNode* root)
+{
+    stack<TreeNode*> stack;
+    vector<int> output;
+    TreeNode* curr = root;
+
+    if (root == nullptr)
+    {
+        return {};
+    }
+
+    stack.push(root);
+
+    while (stack.size())
+    {
+        TreeNode* curr = stack.top();
+        stack.pop();
+
+        if (curr != nullptr)
+        {
+            output.push_back(curr->val);
+        }
+
+        if (curr->right != nullptr)
+        {
+            stack.push(curr->right);
+        }
+
+        if (curr->left != nullptr)
+        {
+            stack.push(curr->left);
+        }
+    }
+
+    return output;
+}
+
 
 
 
