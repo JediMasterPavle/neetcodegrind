@@ -3666,6 +3666,44 @@ vector<int> preorderTraversal(TreeNode* root)
     return output;
 }
 
+/*
+Problem: Binary Tree Postorder Traversal
+Leet Code Link: https://leetcode.com/problems/binary-tree-postorder-traversal/description/
+*/
+vector<int> postorderTraversal(TreeNode* root)
+{
+    stack<TreeNode*> stack;
+    vector<int> output;
+    TreeNode* curr = root;
+
+    if (root == nullptr)
+    {
+        return {};
+    }
+
+    stack.push(root);
+
+    while (stack.size())
+    {
+        TreeNode* curr = stack.top();
+        stack.pop();
+
+        output.push_back(curr->val);
+
+        if (curr->left != nullptr)
+        {
+            stack.push(curr->left);
+        }
+
+        if (curr->right != nullptr)
+        {
+            stack.push(curr->right);
+        }
+    }
+
+    reverse(output.begin(),output.end());
+    return output;
+}
 
 
 
