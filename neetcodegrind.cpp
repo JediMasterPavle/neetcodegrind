@@ -3705,8 +3705,56 @@ vector<int> postorderTraversal(TreeNode* root)
     return output;
 }
 
+/*
+Problem: Find Median from Data Stream
+Leet Code Link: https://leetcode.com/problems/find-median-from-data-stream/description/
+*/
+class MedianFinder
+{
+    private:
+        priority_queue<int> smallerPortion;
+        priority_queue<int, vector<int>, greater<int>> greaterPortion;
 
+    public:
+        MedianFinder(){}
 
+        void addNum(int num)
+        {
+            smallerPortion.push(num);
+            if (!smallerPortion.empty() && !greaterPortion.empty() && smallerPortion.top() > greaterPortion.top())
+            {
+                greaterPortion.push(smallerPortion.top());
+                smallerPortion.pop();
+            }
+
+            int sizeDefference = greaterPortion.size() - smallerPortion.size();
+            if (sizeDefference == 2)
+            {
+                smallerPortion.push(greaterPortion.top());
+                greaterPortion.pop();
+            }
+            else if (sizeDefference == -2)
+            {
+                greaterPortion.push(smallerPortion.top());
+                smallerPortion.pop();
+            }
+        }
+
+        double findMedian()
+        {
+            if (smallerPortion.size() > greaterPortion.size())
+            {
+                return smallerPortion.top();
+            }
+
+            if (smallerPortion.size() < greaterPortion.size())
+            {
+                return greaterPortion.top();
+            }
+
+            return (double) (greaterPortion.top() + smallerPortion.top()) / 2;
+        }
+};
 
 
 
