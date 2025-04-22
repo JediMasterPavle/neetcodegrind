@@ -3756,6 +3756,104 @@ class MedianFinder
         }
 };
 
+/*
+Problem: Sliding Window Median
+Leet Code Link: https://leetcode.com/problems/sliding-window-median/description/
+*/
+class SlidingWindowMedian
+{
+    struct TwoHeap
+    {
+    private:
+        multiset<int> smallerPortion;
+        multiset<int> greaterPortion;
+
+        void balance()
+        {
+            while (smallerPortion.size() > greaterPortion.size() + 1)
+            {
+                auto it = prev(smallerPortion.end());
+                greaterPortion.insert(*it);
+                smallerPortion.erase(it);
+            }
+            while (greaterPortion.size() > smallerPortion.size())
+            {
+                auto it = greaterPortion.begin();
+                smallerPortion.insert(*it);
+                greaterPortion.erase(it);
+            }
+
+            if (!smallerPortion.empty() && !greaterPortion.empty() &&
+                *smallerPortion.rbegin() > *greaterPortion.begin())
+            {
+                int low = *smallerPortion.rbegin();
+                int high = *greaterPortion.begin();
+                smallerPortion.erase(prev(smallerPortion.end()));
+                greaterPortion.erase(greaterPortion.begin());
+                smallerPortion.insert(high);
+                greaterPortion.insert(low);
+            }
+        }
+
+    public:
+        void addNum(int num)
+        {
+            smallerPortion.insert(num);
+            balance();
+        }
+
+        void removeNum(int num)
+        {
+            if (num <= *smallerPortion.rbegin())
+            {
+                auto it = smallerPortion.find(num);
+                if (it != smallerPortion.end())
+                {
+                    smallerPortion.erase(it);
+                }
+            }
+            else
+            {
+                auto it = greaterPortion.find(num);
+                if (it != greaterPortion.end())
+                {
+                    greaterPortion.erase(it);
+                }
+            }
+
+            balance();
+        }
+
+        double findMedian() const
+        {
+            if (smallerPortion.size() > greaterPortion.size())
+            {
+                return *smallerPortion.rbegin();
+            }
+            return ((double) *smallerPortion.rbegin() + (double) *greaterPortion.begin()) * 0.5;
+        }
+    };
+
+    public:
+        vector<double> medianSlidingWindow(const vector<int>& nums, int k)
+        {
+            vector<double> output;
+            TwoHeap twoHeap;
+
+            for (int i = 0; i < nums.size(); i++)
+            {
+                twoHeap.addNum(nums[i]);
+
+                if (i >= k - 1)
+                {
+                    output.push_back(twoHeap.findMedian());
+                    twoHeap.removeNum(nums[i - k + 1]);
+                }
+            }
+
+            return output;
+        }
+};
 
 
 
