@@ -3855,6 +3855,36 @@ class SlidingWindowMedian
         }
 };
 
+/*
+Problem: IPO
+Leet Code Link: https://leetcode.com/problems/ipo/
+*/
+int findMaximizedCapital(int k, int w, vector<int>& profits, vector<int>& capital)
+{
+    priority_queue<int> prof;
+    priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> cap;
+
+    for(int i=0;i<profits.size();i++){
+        cap.push({capital[i],profits[i]});
+    }
+    for (int i = 0; i < k; i++)
+    {
+        while (!cap.empty() && cap.top().first <= w)
+        {
+            prof.push(cap.top().second);
+            cap.pop();
+        }
+
+        if (prof.empty()) {
+            break;
+        }
+
+        w += prof.top();
+        prof.pop();
+    }
+
+    return w;
+}
 
 
 /*
